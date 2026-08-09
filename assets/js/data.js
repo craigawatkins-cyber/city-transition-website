@@ -48,7 +48,6 @@ const HI_DATA = {
   // ---- Peer city comparison (2026 budgets) ----
   peerCities: [
     { name: "Holiday Island", population: 2452, budget: 6108005, note: "Includes recreation & water" },
-    { name: "Cherokee Village", population: 5074, budget: 3719234, note: "Excludes recreation & water" },
     { name: "West Fork", population: 3131, budget: 4454884, note: "Excludes recreation & water" },
     { name: "Green Forest", population: 2972, budget: 3496800, note: "Excludes recreation & water" },
     { name: "Carlisle", population: 2180, budget: 2858886, note: "Excludes recreation & water" },
