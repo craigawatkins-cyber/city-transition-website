@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Will This Cost Me? — Holiday Island's Future</title>
+<meta name="description" content="An interactive calculator estimating how the proposed HISID-to-city transition would change your annual costs, based on the Mayor's feasibility study figures.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/components.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="site-header">
+  <div class="container">
+    <a class="site-brand" href="index.html">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="15" fill="#fff" stroke="#F2B134" stroke-width="2"/><circle cx="13" cy="12" r="5" fill="#F2B134" opacity="0.85"/><path d="M17 6.5 L22.5 17 L19.5 17 L24 25 L10 25 L14.5 17 L11.5 17 Z" fill="#2E6B3E"/></svg>
+      <span>Holiday Island's Future<span class="tag">A community conversation</span></span>
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="why-transition.html">Why This Matters</a></li>
+        <li><a href="budget-today.html">The Budget</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="public-safety.html">Public Safety</a></li>
+        <li><a href="funding.html">How We'd Pay</a></li>
+        <li><a href="growth-plan.html">Growth Plan</a></li>
+        <li><a href="calculator.html" aria-current="page">Cost Calculator</a></li>
+        <li><a href="timeline.html">Timeline</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<noscript><div class="noscript-note">JavaScript is off in your browser. This calculator needs JavaScript to compute results — every other page on this site works without it. See the published worked examples further down this page for reference figures in the meantime.</div></noscript>
+
+<main id="main">
+  <section class="section">
+    <div class="container">
+      <h1>What will this cost me?</h1>
+      <p class="lede">Every property is different. Use the calculator below to estimate your own annual cost change under the proposed transition, using the actual formulas from the Mayor's feasibility study.</p>
+
+      <div class="disclaimer">
+        <strong>Before you start:</strong> these are preliminary estimates from the May and July 2026 feasibility study presentations — not adopted city rates or final figures. Actual costs depend on decisions still to be made by petitions, a sales-tax election, and the City Council. Use this as a planning estimate, not a bill.
+      </div>
+
+      <div class="calc">
+        <form id="impact-form">
+          <fieldset>
+            <legend>1. Your property</legend>
+            <div class="radio-row">
+              <label class="radio-option"><input type="radio" name="property-type" value="improved" checked> House or developed property</label>
+              <label class="radio-option"><input type="radio" name="property-type" value="unimproved"> Vacant lot</label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>2. Property value (used for the 5-mill property tax)</legend>
+            <div class="field" id="home-value-field">
+              <label for="home-value">County-assessed value of your property ($ — land, plus any home/structure)</label>
+              <input type="number" id="home-value" min="0" step="1000" value="150000" inputmode="numeric">
+            </div>
+            <div class="field" id="vehicle-value-field">
+              <label for="vehicle-value">Total household vehicle value ($, optional)</label>
+              <input type="number" id="vehicle-value" min="0" step="1000" value="30000" inputmode="numeric">
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>3. Public Safety option <a href="public-safety.html" style="font-weight:400; font-size:0.85rem;">— this hasn't been decided, learn more</a></legend>
+            <div class="radio-row">
+              <label class="radio-option"><input type="radio" name="safety-option" value="sheriff" checked> Keep sheriff/deputy contract ($632/yr)</label>
+              <label class="radio-option"><input type="radio" name="safety-option" value="police"> Form a police department ($888/yr)</label>
+            </div>
+          </fieldset>
+        </form>
+
+        <div class="calc-results">
+          <h2 style="margin-top:0;">Your estimated impact</h2>
+          <p id="calc-total-summary" aria-live="polite"></p>
+          <p class="calc-total" id="calc-total"></p>
+          <div class="table-wrap">
+            <table>
+              <caption>Line-item breakdown</caption>
+              <thead><tr><th>Item</th><th class="num">Annual amount</th></tr></thead>
+              <tbody id="calc-result-body"></tbody>
+            </table>
+          </div>
+          <div class="disclaimer">
+            These figures use the July 2026 (Session 2) Public Safety fee estimates and the source study's own flat-fee and mill-rate formulas. See the published examples below to cross-check against the original May 2026 presentation.
+          </div>
+        </div>
+      </div>
+
+      <h2>Published worked examples (May 2, 2026 presentation)</h2>
+      <p>For reference, here are the exact worked examples from the original feasibility deck, using that presentation's original fee figures ($634.80 sheriff / $860.78 police per improved property — since refined to $632 / $888 in the July 2026 update used above).</p>
+
+      <h3>With sheriff/deputy contract</h3>
+      <div class="table-wrap">
+        <table>
+          <caption>Original published example — sheriff contract scenario</caption>
+          <thead><tr><th>Line item</th><th class="num">$20K vacant lot</th><th class="num">$150K house</th><th class="num">$300K house</th></tr></thead>
+          <tbody>
+            <tr><td>HISID assessment goes away</td><td class="num negative">-$513.60</td><td class="num negative">-$834.60</td><td class="num negative">-$834.60</td></tr>
+            <tr><td>Recreation USD fee</td><td class="num positive">+$187.85</td><td class="num positive">+$187.85</td><td class="num positive">+$187.85</td></tr>
+            <tr><td>Public Safety USD fee</td><td class="num">$0.00</td><td class="num positive">+$634.80</td><td class="num positive">+$634.80</td></tr>
+            <tr><td>5-mill property tax</td><td class="num positive">+$20.00</td><td class="num positive">+$150.00</td><td class="num positive">+$300.00</td></tr>
+            <tr><td>5-mill personal property tax</td><td class="num">$0.00</td><td class="num positive">+$20.00</td><td class="num positive">+$40.00</td></tr>
+            <tr><td>New 2.5% sales tax (est.)</td><td class="num">$0.00</td><td class="num positive">+$270.00</td><td class="num positive">+$270.00</td></tr>
+            <tr><th scope="row">Net annual change</th><td class="num negative"><strong>-$305.75</strong></td><td class="num positive"><strong>+$428.05</strong></td><td class="num positive"><strong>+$598.05</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>With a new police department</h3>
+      <div class="table-wrap">
+        <table>
+          <caption>Original published example — police department scenario</caption>
+          <thead><tr><th>Line item</th><th class="num">$20K vacant lot</th><th class="num">$150K house</th><th class="num">$300K house</th></tr></thead>
+          <tbody>
+            <tr><td>HISID assessment goes away</td><td class="num negative">-$513.60</td><td class="num negative">-$834.60</td><td class="num negative">-$834.60</td></tr>
+            <tr><td>Recreation USD fee</td><td class="num positive">+$187.85</td><td class="num positive">+$187.85</td><td class="num positive">+$187.85</td></tr>
+            <tr><td>Public Safety USD fee</td><td class="num">$0.00</td><td class="num positive">+$860.78</td><td class="num positive">+$860.78</td></tr>
+            <tr><td>5-mill property tax</td><td class="num positive">+$20.00</td><td class="num positive">+$150.00</td><td class="num positive">+$300.00</td></tr>
+            <tr><td>5-mill personal property tax</td><td class="num">$0.00</td><td class="num positive">+$30.00</td><td class="num positive">+$40.00</td></tr>
+            <tr><td>New 2.5% sales tax (est.)</td><td class="num">$0.00</td><td class="num positive">+$270.00</td><td class="num positive">+$270.00</td></tr>
+            <tr><th scope="row">Net annual change</th><td class="num negative"><strong>-$305.75</strong></td><td class="num positive"><strong>+$664.03</strong></td><td class="num positive"><strong>+$824.03</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="faq.html">Have questions about these numbers? →</a>
+        <a class="btn btn-quiet" href="timeline.html">See what happens next →</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>Holiday Island's Future</h4>
+        <p>An independent, resident-built guide to the proposed transition of services from HISID to the City of Holiday Island — built from two public presentations by Mayor Kees in 2026.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="why-transition.html">Why This Matters</a></li>
+          <li><a href="budget-today.html">The Budget</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="funding.html">How We'd Pay</a></li>
+          <li><a href="growth-plan.html">Growth Plan</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="calculator.html">Cost Calculator</a></li>
+          <li><a href="timeline.html">Timeline &amp; Next Steps</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="public-safety.html">Public Safety Decision</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>About</h4>
+        <ul>
+          <li><a href="about-this-site.html">Sources &amp; About This Site</a></li>
+          <li><a href="https://www.cityofholidayisland.com" target="_blank" rel="noopener">City of Holiday Island official site</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>This is an independent community-education project, not an official publication of the City of Holiday Island or HISID. Figures are drawn from preliminary feasibility studies presented May &amp; July 2026 and are subject to change through the ordinary legislative and petition process. Last updated August 2026.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/calculator.js"></script>
+</body>
+</html>

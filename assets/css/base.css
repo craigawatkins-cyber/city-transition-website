@@ -1,0 +1,159 @@
+/* Holiday Island's Future — design tokens, reset, typography, layout
+   Palette and type pairing deliberately echo holidayisland.us (the HISID
+   community site): forest green + gold, bold uppercase sans headings/nav,
+   serif body copy. Fonts are self-hosted (assets/fonts/) as variable
+   fonts so one file covers the full weight range with no runtime
+   external requests. */
+
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("../fonts/montserrat-variable.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Source Serif 4";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("../fonts/source-serif-4-variable.woff2") format("woff2");
+}
+
+:root {
+  /* Color tokens */
+  --color-bg: #FAF9F3;
+  --color-surface: #FFFFFF;
+  --color-surface-alt: #F0F1E7;
+  --color-text: #2B2B26;
+  --color-text-muted: #5B5A4F;
+  --color-border: #DEDBC7;
+
+  --color-primary: #2E6B3E;
+  --color-primary-dark: #1E4A2A;
+  --color-primary-light: #4C8B5C;
+  --color-primary-contrast: #FFFFFF;
+
+  --color-accent: #F2B134;
+  --color-accent-dark: #A9790C;
+  --color-accent-contrast: #2B2506;
+
+  --color-link: #6E9C34;
+  --color-link-dark: #517327;
+
+  --color-good: #2E6B3E;
+  --color-good-bg: #E9F1E5;
+  --color-warn: #A9790C;
+  --color-warn-bg: #FBF1DC;
+
+  --color-neutral-panel: #F5EFDE;
+  --color-neutral-border: #C9B98F;
+
+  /* Typography */
+  --font-heading: "Montserrat", Arial, Helvetica, sans-serif;
+  --font-body: "Source Serif 4", Georgia, "Iowan Old Style", serif;
+
+  --font-size-base: 18px;
+  --line-height-base: 1.6;
+
+  /* Layout */
+  --measure: 70ch;
+  --radius: 10px;
+  --shadow-card: 0 2px 10px rgba(27, 77, 92, 0.08);
+  --shadow-card-hover: 0 6px 20px rgba(27, 77, 92, 0.14);
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+  --space-5: 4rem;
+}
+
+* , *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  color: var(--color-primary-dark);
+  line-height: 1.2;
+  margin: 0 0 var(--space-2);
+}
+
+h1 { font-size: clamp(2rem, 4vw, 2.9rem); }
+h2 { font-size: clamp(1.5rem, 3vw, 2.1rem); margin-top: var(--space-4); }
+h3 { font-size: 1.3rem; margin-top: var(--space-3); }
+
+p { margin: 0 0 var(--space-2); max-width: var(--measure); }
+main :is(ul, ol) { max-width: var(--measure); }
+
+a { color: var(--color-link); text-underline-offset: 3px; }
+a:hover { color: var(--color-link-dark); }
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 var(--space-3);
+}
+
+main { display: block; padding-bottom: var(--space-5); }
+
+.section {
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-4);
+}
+
+.section--alt { background: var(--color-surface-alt); }
+
+.lede {
+  font-size: 1.2rem;
+  color: var(--color-text-muted);
+  max-width: var(--measure);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  background: var(--color-primary);
+  color: #fff;
+  padding: var(--space-1) var(--space-2);
+  z-index: 100;
+  border-radius: 0 0 6px 0;
+}
+.skip-link:focus { left: 0; }
+
+@media (max-width: 760px) {
+  :root { --font-size-base: 17px; }
+  .section { padding-top: var(--space-3); padding-bottom: var(--space-3); }
+}
