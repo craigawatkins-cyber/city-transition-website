@@ -458,6 +458,25 @@ td.negative { color: var(--color-good); font-weight: 600; }
 }
 .scenic-band h2, .scenic-band p { color: #fff; position: relative; }
 
+/* ---------- Vote call-to-action band ---------- */
+.vote-band {
+  background: linear-gradient(120deg, #F2B134 0%, #E0A322 50%, #A9790C 100%);
+  color: var(--color-accent-contrast);
+  border-radius: var(--radius);
+  padding: var(--space-4);
+  position: relative;
+  overflow: hidden;
+}
+.vote-band::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 15% 30%, rgba(255,255,255,0.20) 0, transparent 45%),
+                     radial-gradient(circle at 85% 70%, rgba(255,255,255,0.14) 0, transparent 40%);
+  pointer-events: none;
+}
+.vote-band h2, .vote-band p { color: inherit; position: relative; }
+
 .noscript-note {
   background: var(--color-warn-bg);
   border: 1px solid var(--color-accent);
