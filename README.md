@@ -14,8 +14,9 @@ The one exception is `calculator.html`, which loads `assets/js/data.js` and `ass
 
 ```
 index.html, why-transition.html, budget-today.html, services.html,
-public-safety.html, funding.html, growth-plan.html, calculator.html,
-timeline.html, faq.html, about-this-site.html      — the 11 site pages
+public-safety.html, funding.html, growth-plan.html, tax-comparison.html,
+calculator.html, timeline.html, faq.html, about-this-site.html
+                                     — the 12 site pages
 favicon.svg
 assets/css/base.css                 — design tokens, reset, typography
 assets/css/components.css           — nav, cards, tables, callouts, calculator widget
