@@ -16,24 +16,25 @@ const HI_DATA = {
 
   // ---- Current (2026) combined budget, City + HISID ----
   currentBudget: {
-    cityOperating: 200231,
+    cityOperating: 637401,
     hisidOperating: 4274877,
     combinedOperating: 4912278,
     combinedWithCapital: 6108005, // total incl. capital improvements
-    // Note: the source slide's per-line city dollar figures did not
-    // reconcile to the published $200,231 city subtotal on re-check, so
-    // only department names (not amounts) are listed here to avoid
-    // presenting unverifiable numbers. The city and HISID *totals* below,
-    // and the full HISID line-item breakdown, are independently verified.
+    // Note: the source PDF's default text extraction misaligned this table by one
+    // row, which had attached $200,231 to the city subtotal and left per-line
+    // figures unverifiable. Re-extracting with pdftotext -table fixed the
+    // alignment: these per-line figures now sum exactly to $637,401, and
+    // $637,401 + hisidOperating ($4,274,877) reconciles exactly to the
+    // slide's stated Combined figure ($4,912,278), confirming the correction.
     cityDepartments: [
-      "Administration",
-      "Buildings & Construction",
-      "Code Enforcement / Animal Control",
-      "District Court",
-      "Planning & Zoning",
-      "Public Safety (sheriff contract share)",
-      "Solid Waste",
-      "Streets & Roads",
+      { name: "Administration", amount: 200231 },
+      { name: "Buildings & Construction", amount: 23209 },
+      { name: "Code Enforcement / Animal Control", amount: 77417 },
+      { name: "District Court", amount: 9550 },
+      { name: "Planning & Zoning", amount: 8353 },
+      { name: "Public Safety (sheriff contract share)", amount: 221600 },
+      { name: "Solid Waste", amount: 2566 },
+      { name: "Streets & Roads", amount: 94475 },
     ],
     hisidDepartments: [
       { name: "Administration", amount: 890343 },
@@ -47,9 +48,10 @@ const HI_DATA = {
   // ---- Peer city comparison (2026 budgets) ----
   peerCities: [
     { name: "Holiday Island", population: 2452, budget: 6108005, note: "Includes recreation & water" },
+    { name: "Cherokee Village", population: 5074, budget: 3719234, note: "Excludes recreation & water" },
     { name: "West Fork", population: 3131, budget: 4454884, note: "Excludes recreation & water" },
     { name: "Green Forest", population: 2972, budget: 3496800, note: "Excludes recreation & water" },
-    { name: "Cherokee Village", population: 2180, budget: 2858886, note: "Excludes recreation & water" },
+    { name: "Carlisle", population: 2180, budget: 2858886, note: "Excludes recreation & water" },
   ],
 
   // ---- Roads ----
