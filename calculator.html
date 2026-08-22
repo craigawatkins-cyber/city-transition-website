@@ -60,12 +60,37 @@
           <fieldset>
             <legend>2. Property value (used for the 5-mill property tax)</legend>
             <div class="field" id="home-value-field">
-              <label for="home-value">County-assessed value of your property ($ — land, plus any home/structure)</label>
+              <label for="home-value">County estimated market value of your property ($)</label>
               <input type="number" id="home-value" min="0" step="1000" value="150000" inputmode="numeric">
+              <p>Enter the "Estimated Market Value" shown by your county assessor — land plus any home or structure. Do not enter the "Full Assessed Value (20%)" or "Taxable Value." The calculator applies the 20% assessment ratio and proposed 5-mill rate for you.</p>
+              <details class="help-details" open>
+                <summary>Which number should I enter?</summary>
+                <p>Your county assessor may show several different values for the same property. For this calculator, enter the <strong>Estimated Market Value</strong>. Example, from a real Carroll County parcel record:</p>
+                <div class="table-wrap">
+                  <table>
+                    <caption>Which value to enter</caption>
+                    <thead><tr><th>Assessor's field</th><th class="num">Example amount</th></tr></thead>
+                    <tbody>
+                      <tr><td>Estimated Market Value <strong>← enter this</strong></td><td class="num">$355,950</td></tr>
+                      <tr><td>Full Assessed Value (20% of market value)</td><td class="num">$71,190</td></tr>
+                      <tr><td>Taxable Value</td><td class="num">$62,825</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p>Do not enter the $71,190 or $62,825 figures — the calculator uses the feasibility study's own simplified methodology of applying a 20% assessment ratio and a 5-mill tax rate to the full market value you enter.</p>
+              </details>
+              <details class="help-details">
+                <summary>How is the 5-mill property tax calculated?</summary>
+                <p>The calculator multiplies the full market value you enter by 0.001. That comes from:</p>
+                <p>Full market value × 20% assessment × 0.5% tax rate (5 mills) = 0.1% of full market value.</p>
+                <p>Example: $300,000 × 20% = $60,000 assessed value. $60,000 × 0.005 = $300 annual tax. So $300,000 × 0.001 = $300/year.</p>
+                <p><strong>5 mills = $5 of tax for every $1,000 of assessed value.</strong> Five mills is 0.5% of the property's <em>assessed</em> value, not 0.5% of its market value.</p>
+              </details>
             </div>
             <div class="field" id="vehicle-value-field">
-              <label for="vehicle-value">Total household vehicle value ($, optional)</label>
+              <label for="vehicle-value">Total household vehicle market value ($, optional)</label>
               <input type="number" id="vehicle-value" min="0" step="1000" value="30000" inputmode="numeric">
+              <p>If your county assessor provides a market/appraised value for your vehicles, enter the total household value here. Do not enter the 20% assessed value — the calculator applies the same market value × 20% × 5-mill formula used for real property.</p>
             </div>
           </fieldset>
 
@@ -76,61 +101,138 @@
               <label class="radio-option"><input type="radio" name="safety-option" value="police"> Form a police department ($888/yr)</label>
             </div>
           </fieldset>
+
+          <fieldset>
+            <legend>4. Optional: your own sales-tax estimate</legend>
+            <details class="help-details">
+              <summary>Want to estimate your own sales-tax impact?</summary>
+              <p>Not sure what to enter? "Taxable spending" means the total you spend in a year on purchases subject to Arkansas sales tax — retail goods, restaurant meals, and most everyday services. The feasibility study's own $270 estimate works out to about <strong>$10,800/year</strong> in taxable spending ($270 ÷ 2.5%) — roughly $900 a month. That's a reasonable starting point for a typical household; adjust up or down based on your own spending.</p>
+              <div class="table-wrap">
+                <table>
+                  <caption>Example households</caption>
+                  <thead><tr><th>If your household spends about...</th><th class="num">Your sales-tax impact</th></tr></thead>
+                  <tbody>
+                    <tr><td>$10,800/year (≈$900/mo) — the study's own assumption</td><td class="num">$270/year</td></tr>
+                    <tr><td>$15,000/year (≈$1,250/mo)</td><td class="num">$375/year</td></tr>
+                    <tr><td>$20,000/year (≈$1,670/mo)</td><td class="num">$500/year</td></tr>
+                    <tr><td>$30,000/year (≈$2,500/mo)</td><td class="num">$750/year</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="field">
+                <label for="custom-taxable-spending">Estimated annual taxable spending ($)</label>
+                <input type="number" id="custom-taxable-spending" min="0" step="100" inputmode="numeric" placeholder="e.g. 20000">
+              </div>
+              <p id="custom-sales-tax-result" aria-live="polite"></p>
+              <p>This is a modeled estimate based on the feasibility study's assumed household spending. It is not a fixed annual charge assessed to the household. Actual sales-tax impact will depend on the amount and type of taxable purchases a household makes. This estimate does not change the results below — it's shown separately from the study's own $270 figure so you can compare the two.</p>
+            </details>
+          </fieldset>
         </form>
 
         <div class="calc-results">
-          <h2 style="margin-top:0;">Your estimated impact</h2>
+          <h2 style="margin-top:0;">Your estimated annual household impact</h2>
+          <p>This is a planning estimate based on the current feasibility-study figures and the assumptions you entered. It is not an adopted tax bill.</p>
+          <p><strong>This shows the change this proposal would make — not your full tax bill.</strong> It does not include property tax you already pay today (Carroll County, school district, or other existing local millage) or sales tax you already pay today (Arkansas's state rate or Carroll County's existing rate). Those don't change under this proposal, so they're left out. Only the HISID assessment (removed) and the newly proposed city charges (added) are shown below. For your full combined tax picture, including current rates, see the <a href="tax-comparison.html">Tax Comparison page</a>.</p>
           <p id="calc-total-summary" aria-live="polite"></p>
           <p class="calc-total" id="calc-total"></p>
           <div class="table-wrap">
             <table>
               <caption>Line-item breakdown</caption>
-              <thead><tr><th>Item</th><th class="num">Annual amount</th></tr></thead>
+              <thead><tr><th>Item</th><th class="num">Annual amount</th><th>Source</th></tr></thead>
               <tbody id="calc-result-body"></tbody>
             </table>
           </div>
           <div class="disclaimer">
             These figures use the July 2026 (Session 2) Public Safety fee estimates and the source study's own flat-fee and mill-rate formulas. See the published examples below to cross-check against the original May 2026 presentation.
           </div>
+          <details class="help-details" id="calc-how-calculated">
+            <summary>How was this calculated?</summary>
+            <ol id="calc-how-list"></ol>
+          </details>
         </div>
       </div>
 
       <h2>How these numbers are calculated</h2>
       <p>The calculator adds together six line items using the source study's own flat-fee and mill-rate formulas — the same math shown in the "Published worked examples" table below. Your net annual change is simply the sum of these six numbers.</p>
 
+      <div class="disclaimer">
+        <strong>Important:</strong> This calculator reproduces the simplified property-tax methodology used in the Holiday Island feasibility study. Actual Arkansas property taxes are calculated using taxable assessed value and applicable local millage rates. Amendment 79 and other Arkansas property-tax provisions can cause a property's taxable assessed value to differ from a simple 20% calculation. Your actual future tax bill may therefore differ from this estimate. This calculator is not an official Arkansas tax calculator, and the figures below are not final city rates.
+      </div>
+
       <div class="table-wrap">
-        <table>
+        <table id="calc-formula-table">
           <caption>Formula behind each line item</caption>
-          <thead><tr><th>Line item</th><th>How it's calculated</th></tr></thead>
+          <thead><tr><th>Line item</th><th>How it's calculated</th><th>Source</th></tr></thead>
           <tbody>
             <tr>
               <td>HISID assessment goes away</td>
-              <td>A flat amount is subtracted: −$834.60/year for an improved (developed) property, or −$513.60/year for a vacant lot — the current HISID assessment for each category, which the transition eliminates.</td>
+              <td>A flat amount is subtracted: −$834.60/year for an improved (developed) property, or −$513.60/year for a vacant lot — the current HISID assessment for each category, which the transition eliminates.<sup><a href="#calc-fn1">1</a></sup></td>
+              <td><span class="badge badge--current">Current charge (ending)</span></td>
             </tr>
             <tr>
               <td>Recreation Urban Service District fee</td>
-              <td>A flat +$187.85/year, charged to every property regardless of improved/vacant status or property value.</td>
+              <td>A flat +$187.85/year, charged to every property regardless of improved/vacant status or property value.<sup><a href="#calc-fn1">1</a></sup></td>
+              <td><span class="badge badge--study">Proposed (study figure)</span></td>
             </tr>
             <tr>
               <td>Public Safety Urban Service District fee</td>
-              <td>A flat fee charged only to improved properties: +$632/year if the city keeps the sheriff/deputy contract, or +$888/year if it forms its own police department — whichever option you select. Vacant lots aren't billed for this fee.</td>
+              <td>A flat fee charged only to improved properties: +$632/year if the city keeps the sheriff/deputy contract, or +$888/year if it forms its own police department — whichever option you select. Vacant lots aren't billed for this fee.<sup><a href="#calc-fn1">1</a></sup></td>
+              <td><span class="badge badge--study">Proposed (study figure)</span></td>
             </tr>
             <tr>
               <td>5-mill city property tax (real estate)</td>
-              <td>Your entered property value × 0.001. That 0.1% comes from Arkansas's standard property-tax method: real property is assessed at 20% of its value, and the proposed city rate is 5 mills (0.5%) of the assessed value — 20% × 0.5% = 0.1% of the full value you enter.</td>
+              <td>Your entered property value × 0.001. That 0.1% comes from Arkansas's standard property-tax method: real property is assessed at 20% of its value, and the proposed city rate is 5 mills (0.5%) of the assessed value — 20% × 0.5% = 0.1% of the full value you enter.<sup><a href="#calc-fn2">2</a></sup></td>
+              <td><span class="badge badge--study">Proposed (study figure)</span></td>
             </tr>
             <tr>
               <td>5-mill city property tax (vehicles)</td>
-              <td>Your entered vehicle value × 0.001, using the same 20%-assessment × 5-mill formula as real property. This only applies to improved (occupied) properties, since the source model doesn't attribute household vehicles to vacant lots.</td>
+              <td>Your entered vehicle value × 0.001, using the same 20%-assessment × 5-mill formula as real property. This only applies to improved (occupied) properties, since the source model doesn't attribute household vehicles to vacant lots.<sup><a href="#calc-fn2">2</a></sup></td>
+              <td><span class="badge badge--study">Proposed (study figure)</span></td>
             </tr>
             <tr>
-              <td>Estimated share of new 2.5% sales tax</td>
-              <td>A flat modeled estimate of +$270/year for an improved/household property, based on the feasibility study's household spending assumptions — not a calculation from your own spending, since the calculator doesn't ask for that.</td>
+              <td>Estimated household impact of new 2.5% sales tax</td>
+              <td>A flat modeled estimate of +$270/year for an improved/household property, based on the feasibility study's household spending assumptions — not a calculation from your own spending, since the calculator doesn't ask for that.<sup><a href="#calc-fn1">1</a></sup></td>
+              <td><span class="badge badge--estimate">Modeled estimate</span></td>
             </tr>
           </tbody>
         </table>
       </div>
       <p>Two things worth calling out: the property-value fields only ever affect the two mill-rate lines — they don't change the flat fees — and the "Public Safety" and "sales tax" lines are $0 for vacant lots because those fees apply only to improved properties in the source study's own model.</p>
+      <ol style="font-size:0.9rem; color:var(--color-text-muted);">
+        <li id="calc-fn1">The flat dollar figures — the HISID assessment removed, the Recreation and Public Safety Urban Service District fees, and the sales-tax estimate — come directly from the Mayor's feasibility study presentations: <em>"Can the City Do It All?"</em> (May 2, 2026, revised May 6) and <em>"The Future Holiday Island — Session 2: Protecting Our Citizens"</em> (July 11, 2026, revised July 13). This calculator uses the more recent July figures throughout; see the <a href="about-this-site.html#sources">Sources page</a> for full citations. <a href="#calc-formula-table">↩ back to table</a></li>
+        <li id="calc-fn2">The 20% assessment ratio and the 5-mill municipal property tax rate aren't figures unique to the feasibility study — they're general features of Arkansas law: Ark. Code Ann. § 26-26-303(c) sets the 20%-of-market-value assessment ratio, and the <a href="https://law.justia.com/constitution/arkansas/article-12/section-4/" target="_blank" rel="noopener">Arkansas Constitution, Article 12, § 4</a> caps the municipal property tax a city may levy without a separate vote at 5 mills on real and personal property. The <a href="funding.html">How We'd Pay page</a> covers how the study applies this same toolkit. <a href="#calc-formula-table">↩ back to table</a></li>
+      </ol>
+
+      <h2>Market value, assessed value, and taxable value — three different numbers</h2>
+      <p>Arkansas county assessors track three distinct figures for every property. Knowing which one is which matters for this calculator — and for reading your own assessment notice.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <h3>Market value</h3>
+          <p>What the county estimates the property is worth. This is the number this calculator asks you to enter.</p>
+        </div>
+        <div class="card">
+          <h3>Full assessed value</h3>
+          <p>Generally 20% of market value for Arkansas real property. Do not enter this figure into the calculator — it already applies the 20% ratio for you.</p>
+        </div>
+        <div class="card">
+          <h3>Taxable value</h3>
+          <p>The value actually used to calculate a real property tax bill, after Amendment 79's caps and any applicable credits are factored in. This can legitimately be lower than the full assessed value.</p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <caption>Worked example, from a real Carroll County parcel record</caption>
+          <thead><tr><th>Assessor's field</th><th class="num">Example amount</th></tr></thead>
+          <tbody>
+            <tr><td>Estimated Market Value</td><td class="num">$355,950</td></tr>
+            <tr><td>Full Assessed (20% Market Value)</td><td class="num">$71,190</td></tr>
+            <tr><td>Taxable Value</td><td class="num">$62,825</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>These numbers can all legitimately be different for the same property. This calculator uses <strong>Estimated Market Value</strong> — see "Which number should I enter?" above the property-value field.</p>
 
       <h2>Published worked examples (May 2, 2026 presentation)</h2>
       <p>For reference, here are the exact worked examples from the original feasibility deck, using that presentation's original fee figures ($634.80 sheriff / $860.78 police per improved property — since refined to $632 / $888 in the July 2026 update used above).</p>
@@ -176,21 +278,39 @@
         <strong>A note on this section:</strong> like the Growth Plan and Tax Comparison pages, the material below isn't from the Mayor's feasibility study — it's independently researched from the Arkansas Department of Finance and Administration (property tax relief programs) and the National Recreation and Park Association (amenities and property values). Confirm your own eligibility and the current homestead credit amount with the Carroll County Assessor's office; state lawmakers revised those figures more than once in 2026.
       </div>
 
+      <h3>What "ad valorem" means — and why it changes who pays what</h3>
+      <p><em>Ad valorem</em> is Latin for "according to value." It's the standard term for a tax calculated as a percentage of what something is worth, rather than a flat dollar amount charged to everyone alike. The proposed 5-mill city property tax is an ad valorem tax: every property is taxed at the same <em>rate</em> — 0.1% of its estimated market value — so the dollar amount scales with what the property is actually worth. HISID's current assessment works the opposite way: it's a flat, per-property charge that doesn't look at value at all, so a modest home and a much larger one on the lake pay the identical dollar amount today.</p>
+
+      <div class="table-wrap">
+        <table>
+          <caption>Same flat assessment today, regardless of value</caption>
+          <thead><tr><th>Charge</th><th class="num">$150,000 home</th><th class="num">$850,000 lakefront home</th></tr></thead>
+          <tbody>
+            <tr><td>Today's flat HISID assessment</td><td class="num">$834.60</td><td class="num">$834.60</td></tr>
+            <tr><td>...as a share of the home's value</td><td class="num">0.56%</td><td class="num">0.10%</td></tr>
+            <tr><td>Proposed 5-mill ad valorem property tax</td><td class="num">$150.00</td><td class="num">$850.00</td></tr>
+            <tr><td>...as a share of the home's value</td><td class="num">0.10%</td><td class="num">0.10%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Today, both homes pay the exact same $834.60 HISID assessment — which means, measured against what each home is worth, the $150,000 home is paying more than five times the effective rate of the $850,000 home. Under an ad valorem property tax, both properties pay the same 0.1% rate: the lakefront home pays more in dollars, as you'd expect from a property worth over five times as much, but the two homes carry the same proportional burden. This fairness argument is about how the property-tax component is distributed, not about whether your total bill goes up or down overall — use the calculator above for your own full picture.</p>
+
       <h3>The flat assessment you pay today has no relief built in. Real property tax does.</h3>
-      <p>HISID's current assessment is a flat charge — everyone in a given category pays the same amount, with no discount for income or age. Arkansas's constitutional property tax protections for homeowners only apply to real ad valorem property tax, not to a special-district assessment like HISID's. That means the new 5-mill city property tax, unwelcome as a "new" tax sounds, is also what makes these protections available to Holiday Island homeowners for the first time:</p>
+      <p>HISID's current assessment is a flat charge — everyone in a given category pays the same amount, with no discount for income or age. Arkansas's constitutional property tax protections for homeowners only apply to the standard annual property tax billed on assessed value, not to a special-district assessment like HISID's. That means the new 5-mill city property tax, unwelcome as a "new" tax sounds, is also what makes these protections available to Holiday Island homeowners for the first time:</p>
 
       <div class="card-grid">
         <div class="card">
           <h3>The Homestead Tax Credit</h3>
-          <p>Arkansas's homestead credit — recently raised to roughly $600 a year, with some 2026 legislation pushing it further toward $675 — applies against the total property tax bill on your primary home, including the new city portion. For many homes, especially lower-valued ones, this credit can offset a meaningful share, or all, of the new city tax.</p>
+          <p>Arkansas provides a homestead property-tax credit for eligible primary residences — currently <strong>$600 per year</strong>, raised from $500 by Act 330 of 2025 (Ark. Code Ann. § 26-26-1118(a)(1)(A)), effective for the 2025 assessment year onward. The credit reduces your total real-property tax bill, including any new city portion — it is not a separate credit created specifically for the proposed city tax, and a homeowner does not receive an additional credit just because a new taxing jurisdiction is created. <strong>This calculator does not subtract the homestead credit from the proposed 5-mill city tax.</strong> For many lower-valued homes it can still offset a meaningful share of the new city tax. Confirm your current-year amount with the Carroll County Assessor or Arkansas DFA, since state law can change.</p>
+          <p style="font-size:0.85rem; color:var(--color-text-muted); margin-bottom:0;">Source: <a href="https://www.dfa.arkansas.gov/office/arkansas-assessment-coordination-division/real-property/property-tax-relief/" target="_blank" rel="noopener">Arkansas DFA — Property Tax Relief Programs</a>; <a href="https://arkleg.state.ar.us/Home/FTPDocument?path=/ACTS/2025R/Public/ACT330.pdf" target="_blank" rel="noopener">Act 330 of 2025</a>.</p>
         </div>
         <div class="card">
           <h3>The 65+ / disabled assessment freeze</h3>
-          <p>If you're 65 or older, or disabled (no income limit), you can apply to freeze your home's taxable value with the county assessor. Once frozen, that value stops rising — so even if Holiday Island grows and property values climb, as this site's <a href="growth-plan.html">Growth Plan</a> hopes they will, your own city property tax bill stays flat for as long as you own the home.</p>
+          <p>If you're 65 or older, or disabled, you can apply with the county assessor to freeze your home's assessed value (no income limit was found to apply to this specific freeze). This isn't automatic — you must file the application. Once approved, that assessed value stops rising due to reappraisal, even as Holiday Island grows and property values climb, as this site's <a href="growth-plan.html">Growth Plan</a> hopes they will. This does <strong>not</strong> guarantee your entire future city tax bill stays flat — millage rates, Urban Service District fees, and other charges can still change even with a frozen assessed value.</p>
         </div>
         <div class="card">
           <h3>The 5% annual growth cap</h3>
-          <p>Even without the senior freeze, Arkansas law caps how much any homestead's taxable value can rise in a single year at 5% — a guardrail against a sudden spike, for every homeowner, at any age.</p>
+          <p>Even without the senior/disabled freeze, Arkansas Amendment 79 caps how much any homestead's assessed value can rise in a single year from reappraisal at 5% — a guardrail against a sudden spike, for every homeowner, at any age. Exceptions apply for new construction, substantial improvements, and newly discovered property.</p>
         </div>
       </div>
 

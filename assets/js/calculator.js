@@ -55,6 +55,9 @@ function renderCalculator() {
   const resultBody = document.getElementById("calc-result-body");
   const totalEl = document.getElementById("calc-total");
   const totalSummaryEl = document.getElementById("calc-total-summary");
+  const howCalculatedList = document.getElementById("calc-how-list");
+  const customSpendingInput = document.getElementById("custom-taxable-spending");
+  const customSalesTaxResultEl = document.getElementById("custom-sales-tax-result");
 
   function currentInputs() {
     const isImproved = form.querySelector('input[name="property-type"]:checked').value === "improved";
@@ -67,30 +70,62 @@ function renderCalculator() {
     };
   }
 
+  function renderHowCalculated(inputs, r) {
+    if (!howCalculatedList) return;
+    const enteredHome = Number(inputs.homeValue) || 0;
+    const enteredVehicles = Number(inputs.vehicleValue) || 0;
+    const steps = [
+      `HISID assessment: ${formatMoney(r.hisidRemoved)}`,
+      `Recreation Urban Service District fee: +${formatMoney(r.recreationUsd)}`,
+      inputs.isImproved
+        ? `Public Safety (${inputs.safetyOption === "police" ? "police dept." : "sheriff contract"}): +${formatMoney(r.publicSafetyUsd)}`
+        : `Public Safety: $0.00 — vacant lots aren't billed`,
+      `Real property: ${formatMoney(enteredHome)} market value × 0.001 = +${formatMoney(r.realPropertyTax)}`,
+      inputs.isImproved
+        ? `Vehicles: ${formatMoney(enteredVehicles)} market value × 0.001 = +${formatMoney(r.personalPropertyTax)}`
+        : `Vehicles: $0.00 — vacant lots aren't billed`,
+      `Sales tax: study's modeled household estimate = +${formatMoney(r.salesTaxImpact)}`,
+      `Net change: ${r.netChange > 0 ? "+" : ""}${formatMoney(r.netChange)}/year (≈ ${formatMoney(Math.abs(r.netChange / 12))}/month)`,
+    ];
+    howCalculatedList.innerHTML = steps.map((step) => `<li>${step}</li>`).join("");
+  }
+
   function update() {
     const inputs = currentInputs();
     vehicleValueField.hidden = !inputs.isImproved;
 
+    const rawHomeValue = homeValueInput.value.trim();
+    if (rawHomeValue === "" || Number.isNaN(Number(rawHomeValue))) {
+      resultBody.innerHTML = "";
+      totalEl.textContent = "";
+      totalEl.className = "calc-total";
+      totalSummaryEl.textContent = "Enter your property value to calculate the estimate.";
+      if (howCalculatedList) howCalculatedList.innerHTML = "";
+      return;
+    }
+
     const r = computeImpact(inputs);
 
     const rows = [
-      ["HISID assessment goes away", r.hisidRemoved],
-      ["Recreation Urban Service District fee", r.recreationUsd],
+      ["HISID assessment goes away", r.hisidRemoved, "current", "Current charge (ending)"],
+      ["Recreation Urban Service District fee", r.recreationUsd, "study", "Proposed (study figure)"],
       [
         inputs.isImproved
           ? `Public Safety Urban Service District fee (${inputs.safetyOption === "police" ? "police dept." : "sheriff contract"})`
           : "Public Safety Urban Service District fee (vacant lots not billed)",
         r.publicSafetyUsd,
+        "study",
+        "Proposed (study figure)",
       ],
-      ["5-mill city property tax (real estate)", r.realPropertyTax],
-      ["5-mill city property tax (vehicles)", r.personalPropertyTax],
-      ["Estimated share of new 2.5% sales tax", r.salesTaxImpact],
+      ["5-mill city property tax (real estate)", r.realPropertyTax, "study", "Proposed (study figure)"],
+      ["5-mill city property tax (vehicles)", r.personalPropertyTax, "study", "Proposed (study figure)"],
+      ["Estimated household impact of new 2.5% sales tax", r.salesTaxImpact, "estimate", "Modeled estimate"],
     ];
 
-    resultBody.innerHTML = rows.map(([label, value]) => {
+    resultBody.innerHTML = rows.map(([label, value, badgeClass, badgeLabel]) => {
       const cls = value > 0 ? "positive" : value < 0 ? "negative" : "";
       const sign = value > 0 ? "+" : "";
-      return `<tr><th scope="row">${label}</th><td class="num ${cls}">${sign}${formatMoney(value)}</td></tr>`;
+      return `<tr><th scope="row">${label}</th><td class="num ${cls}">${sign}${formatMoney(value)}</td><td><span class="badge badge--${badgeClass}">${badgeLabel}</span></td></tr>`;
     }).join("");
 
     const netSign = r.netChange > 0 ? "+" : "";
@@ -100,14 +135,30 @@ function renderCalculator() {
     const monthly = r.netChange / 12;
     const monthlySign = monthly > 0 ? "increase" : "decrease";
     totalSummaryEl.textContent = `Based on what you entered, your estimated net change is ${netSign}${formatMoney(r.netChange)} per year — about ${formatMoney(Math.abs(monthly))} a month ${r.netChange === 0 ? "" : monthlySign === "increase" ? "more" : "less"} than today.`;
+
+    renderHowCalculated(inputs, r);
+  }
+
+  function updateCustomSalesTax() {
+    if (!customSalesTaxResultEl) return;
+    const studyEstimate = HI_DATA.calculator.salesTaxHouseholdEstAnnual;
+    const raw = customSpendingInput.value.trim();
+    if (raw === "" || Number.isNaN(Number(raw))) {
+      customSalesTaxResultEl.textContent = `Study estimate: ${formatMoney(studyEstimate)}/year`;
+      return;
+    }
+    const yourEstimate = Number(raw) * (HI_DATA.revenue.proposedSalesTaxPct / 100);
+    customSalesTaxResultEl.textContent = `Study estimate: ${formatMoney(studyEstimate)}/year · Your estimate: ${formatMoney(yourEstimate)}/year`;
   }
 
   propertyTypeInputs.forEach((el) => el.addEventListener("change", update));
   safetyOptionInputs.forEach((el) => el.addEventListener("change", update));
   homeValueInput.addEventListener("input", update);
   vehicleValueInput.addEventListener("input", update);
+  if (customSpendingInput) customSpendingInput.addEventListener("input", updateCustomSalesTax);
 
   update();
+  updateCustomSalesTax();
 }
 
 document.addEventListener("DOMContentLoaded", renderCalculator);
