@@ -37,7 +37,7 @@ The header navigation and footer are repeated by hand in every page. When adding
 ## Editorial conventions
 
 - **Three kinds of content, kept visibly separate:** official facts (cited to the Long Range Plan or another official source), independent analysis, and the author's recommendations. Analysis and recommendations are labeled where they appear.
-- **Status badges** (`.badge--decided`, `.badge--planned`, `.badge--condition`, `.badge--future`) mark the status of each phase or revenue source. Use "Endorsed / Planned" for the road transition, not "Decided".
+- **Status badges** (`.badge--decided`, `.badge--planned`, `.badge--condition`, `.badge--future`) mark the status of each phase or revenue source. For the road transition, quote the Long Range Plan ("will assume 100% of road maintenance responsibility starting in 2027") and badge it "Endorsed · Starting 2027", not "Decided".
 - **Source labels** (`<p class="source-note">`) sit under major financial and timeline claims.
 - **Numbered citations.** Mark a figure with `<sup class="cite" data-src="lrp"></sup>` (one or more source keys), then run `perl tools/build-citations.pl *.html` from the repo root. The script numbers the citations and rebuilds each page's "Sources cited on this page" list. Source keys and their links live at the top of that script.
 - **Don't overstate certainty.** The plan calls itself "not a binding contract but rather a good faith projection." Prefer "planned," "expected," "would," and "not yet determined" unless an official source states an exact fact.
