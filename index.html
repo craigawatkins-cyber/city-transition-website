@@ -41,11 +41,14 @@
 <main id="main">
 
   <section class="hero">
-    <svg class="hero-art" viewBox="0 0 1200 500" preserveAspectRatio="xMaxYMax slice" aria-hidden="true" focusable="false">
+    <svg class="hero-art" viewBox="0 0 1200 500" preserveAspectRatio="xMaxYMax meet" aria-hidden="true" focusable="false">
       <defs>
         <radialGradient id="hero-sun-glow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#F2B134" stop-opacity="0.55"/><stop offset="100%" stop-color="#F2B134" stop-opacity="0"/></radialGradient>
         <linearGradient id="hero-lake" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7DB7AE"/><stop offset="100%" stop-color="#4C8B7F"/></linearGradient>
+        <linearGradient id="hero-fade-grad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#fff" stop-opacity="0"/><stop offset="45%" stop-color="#fff" stop-opacity="1"/></linearGradient>
+        <mask id="hero-fade" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="500"><rect x="0" y="0" width="1200" height="500" fill="url(#hero-fade-grad)"/></mask>
       </defs>
+      <g mask="url(#hero-fade)">
       <circle cx="985" cy="150" r="150" fill="url(#hero-sun-glow)"/>
       <circle cx="985" cy="150" r="46" fill="#F2B134"/>
       <path d="M0,330 C140,300 260,318 400,292 C520,270 600,236 720,226 C840,216 900,262 1010,246 C1100,233 1150,206 1200,196 L1200,500 L0,500 Z" fill="#3D7A4C"/>
@@ -58,6 +61,7 @@
         <path d="M1062,384 l17,-48 l-9,0 l14,-38 l-8,0 l12,-34 l12,34 l-8,0 l14,38 l-9,0 l17,48 Z"/>
         <path d="M236,420 l15,-42 l-8,0 l12,-34 l-7,0 l11,-30 l11,30 l-7,0 l12,34 l-8,0 l15,42 Z"/>
         <path d="M300,418 l11,-32 l-6,0 l9,-26 l-5,0 l8,-22 l8,22 l-5,0 l9,26 l-6,0 l11,32 Z"/>
+      </g>
       </g>
     </svg>
     <div class="container">
