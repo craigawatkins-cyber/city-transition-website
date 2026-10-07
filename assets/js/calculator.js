@@ -23,7 +23,17 @@ function signedMoney(n) {
   return (n > 0 ? "+" : "") + formatMoney(n);
 }
 
-function computeImpact({ isImproved, homeValue, vehicleValue, safetyOption }) {
+// Reads the optional taxable-spending field. Blank means "use the default";
+// zero is a valid entry; negative or non-numeric input is rejected.
+function parseCustomSpending(raw) {
+  const text = String(raw == null ? "" : raw).trim();
+  if (text === "") return { status: "blank", value: null };
+  const n = Number(text);
+  if (!Number.isFinite(n) || n < 0) return { status: "invalid", value: null };
+  return { status: "custom", value: n };
+}
+
+function computeImpact({ isImproved, homeValue, vehicleValue, safetyOption, customSpending }) {
   const c = HI_DATA.calculator;
 
   // Real property (land + any structure) is taxed regardless of whether a
@@ -40,7 +50,14 @@ function computeImpact({ isImproved, homeValue, vehicleValue, safetyOption }) {
   const realPropertyTax = assessedValue * c.newMillRate;
   const personalPropertyTax = vehicles * c.newMillRate;
   const existingCityPropertyTax = (assessedValue + vehicles) * c.currentMillRate;
-  const salesTaxImpact = isImproved ? c.salesTaxHouseholdEstAnnual : 0;
+  // Sales tax: the study's flat household estimate by default (improved
+  // properties only). A valid custom spending amount replaces it, and only it.
+  const spending = parseCustomSpending(customSpending);
+  const salesTaxRate = HI_DATA.revenue.proposedSalesTaxPct / 100;
+  const salesTaxIsCustom = spending.status === "custom";
+  const salesTaxImpact = salesTaxIsCustom
+    ? spending.value * salesTaxRate
+    : (isImproved ? c.salesTaxHouseholdEstAnnual : 0);
 
   const netChange = hisidRemoved + recreationUsd + publicSafetyUsd
     + realPropertyTax + personalPropertyTax + salesTaxImpact;
@@ -49,6 +66,7 @@ function computeImpact({ isImproved, homeValue, vehicleValue, safetyOption }) {
     hisidRemoved, recreationUsd, publicSafetyUsd,
     realPropertyTax, personalPropertyTax, salesTaxImpact,
     existingCityPropertyTax,
+    salesTaxIsCustom, spendingStatus: spending.status, spendingValue: spending.value,
     netChange,
   };
 }
@@ -80,6 +98,7 @@ function renderCalculator() {
       homeValue: homeValueInput.value,
       vehicleValue: vehicleValueInput.value,
       safetyOption,
+      customSpending: customSpendingInput ? customSpendingInput.value : "",
     };
   }
 
@@ -97,7 +116,9 @@ function renderCalculator() {
       inputs.isImproved
         ? `Vehicles, one additional mill: ${formatMoney(enteredVehicles)} market value × 0.0002 = +${formatMoney(r.personalPropertyTax)}`
         : `Vehicles: $0.00 — vacant lots aren't billed`,
-      `Sales tax: study's modeled household estimate = +${formatMoney(r.salesTaxImpact)}`,
+      r.salesTaxIsCustom
+        ? `Sales tax: your ${formatMoney(r.spendingValue)} taxable spending × ${HI_DATA.revenue.proposedSalesTaxPct}% = +${formatMoney(r.salesTaxImpact)}`
+        : `Sales tax: study's modeled household estimate = +${formatMoney(r.salesTaxImpact)}`,
       `Net change: ${signedMoney(r.netChange)}/year (≈ ${formatMoney(Math.abs(r.netChange / 12))}/month)`,
       `Not counted, because you already pay it: the City's existing 4 mills, about ${formatMoney(r.existingCityPropertyTax)}/year on the values entered`,
     ];
@@ -112,7 +133,7 @@ function renderCalculator() {
     const rows = [
       ["2027 · Roads", "HISID assessment is reduced because road costs move to the City", tbd],
       ["2027", "City property tax, if the council sets 5 mills in place of today's 4", signedMoney(newMill) + " / year"],
-      ["2027", "2.5% sales tax, if voters approve it on November 3", inputs.isImproved ? signedMoney(r.salesTaxImpact) + " / year (estimate)" : "$0.00 in this model"],
+      ["2027", "2.5% sales tax, if voters approve it on November 3", (inputs.isImproved || r.salesTaxIsCustom) ? signedMoney(r.salesTaxImpact) + (r.salesTaxIsCustom ? " / year (your spending estimate)" : " / year (estimate)") : "$0.00 in this model"],
       ["2027/28 · Water &amp; sewer", "Assessment is reduced when the sewer loan is paid, and the Sewer Debt charge comes off the water bill", signedMoney(-sewer) + " / year"],
       ["2028 · Public safety &amp; fire", "Public Safety fee starts on the water bill, if the petition succeeds; assessment is reduced again", inputs.isImproved ? signedMoney(r.publicSafetyUsd) + " / year fee; reduction " + tbd : "No fee for vacant lots; reduction " + tbd],
       ["2029 · Recreation", "Recreation fee starts; assessment is reduced again", signedMoney(r.recreationUsd) + " / year (early estimate); reduction " + tbd],
@@ -153,7 +174,9 @@ function renderCalculator() {
       ],
       ["City property tax, one additional mill (real estate)", r.realPropertyTax, "study", "Planning assumption (4 to 5 mills)"],
       ["City property tax, one additional mill (vehicles)", r.personalPropertyTax, "study", "Planning assumption (4 to 5 mills)"],
-      ["Estimated household impact of proposed 2.5% sales tax", r.salesTaxImpact, "estimate", "Modeled estimate"],
+      r.salesTaxIsCustom
+        ? [`Estimated annual sales-tax impact (based on your ${formatMoney(r.spendingValue)} taxable spending estimate)`, r.salesTaxImpact, "estimate", "Your estimate"]
+        : ["Estimated household impact of proposed 2.5% sales tax", r.salesTaxImpact, "estimate", "Modeled estimate"],
     ];
 
     resultBody.innerHTML = rows.map(([label, value, badgeClass, badgeLabel]) => {
@@ -178,26 +201,44 @@ function renderCalculator() {
     renderHowCalculated(inputs, r);
   }
 
+  // Tells the user which sales-tax figure the main result is using.
   function updateCustomSalesTax() {
-    if (!customSalesTaxResultEl) return;
-    const studyEstimate = HI_DATA.calculator.salesTaxHouseholdEstAnnual;
-    const raw = customSpendingInput.value.trim();
-    if (raw === "" || Number.isNaN(Number(raw))) {
-      customSalesTaxResultEl.textContent = `Study estimate: ${formatMoney(studyEstimate)}/year`;
-      return;
+    if (!customSalesTaxResultEl || !customSpendingInput) return;
+    const isImproved = form.querySelector('input[name="property-type"]:checked').value === "improved";
+    const pct = HI_DATA.revenue.proposedSalesTaxPct;
+    const defaultAmount = isImproved ? HI_DATA.calculator.salesTaxHouseholdEstAnnual : 0;
+    // A number input reports "" for text it cannot parse; badInput tells that apart from blank.
+    const unparsable = customSpendingInput.validity && customSpendingInput.validity.badInput;
+    const spending = unparsable ? { status: "invalid" } : parseCustomSpending(customSpendingInput.value);
+    if (spending.status === "custom") {
+      customSalesTaxResultEl.textContent = `Using your estimate: ${formatMoney(spending.value)} × ${pct}% = ${formatMoney(spending.value * pct / 100)} a year. This is the sales tax line in your result below.`;
+    } else if (spending.status === "invalid") {
+      customSalesTaxResultEl.textContent = `Please enter 0 or a positive number. Until then the result uses the default of ${formatMoney(defaultAmount)} a year.`;
+    } else {
+      customSalesTaxResultEl.textContent = `Using the default: ${formatMoney(defaultAmount)} a year${isImproved ? " (the study's household estimate)" : " for a vacant lot"}.`;
     }
-    const yourEstimate = Number(raw) * (HI_DATA.revenue.proposedSalesTaxPct / 100);
-    customSalesTaxResultEl.textContent = `Study estimate: ${formatMoney(studyEstimate)}/year · Your estimate: ${formatMoney(yourEstimate)}/year`;
   }
 
-  propertyTypeInputs.forEach((el) => el.addEventListener("change", update));
-  safetyOptionInputs.forEach((el) => el.addEventListener("change", update));
-  homeValueInput.addEventListener("input", update);
-  vehicleValueInput.addEventListener("input", update);
-  if (customSpendingInput) customSpendingInput.addEventListener("input", updateCustomSalesTax);
+  function refresh() {
+    update();
+    updateCustomSalesTax();
+  }
 
-  update();
-  updateCustomSalesTax();
+  propertyTypeInputs.forEach((el) => el.addEventListener("change", refresh));
+  safetyOptionInputs.forEach((el) => el.addEventListener("change", refresh));
+  homeValueInput.addEventListener("input", refresh);
+  vehicleValueInput.addEventListener("input", refresh);
+  if (customSpendingInput) customSpendingInput.addEventListener("input", refresh);
+
+  const resetButton = document.getElementById("calc-reset");
+  if (resetButton) {
+    resetButton.addEventListener("click", () => {
+      form.reset(); // restores every field's default, including a blank spending field
+      refresh();
+    });
+  }
+
+  refresh();
 }
 
 document.addEventListener("DOMContentLoaded", renderCalculator);

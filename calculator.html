@@ -112,14 +112,20 @@
           </fieldset>
 
           <fieldset>
-            <legend>4. Optional: your own sales-tax estimate</legend>
+            <legend>4. Your annual taxable spending (optional)</legend>
+            <div class="field">
+              <label for="custom-taxable-spending">Estimated annual taxable spending in Holiday Island ($)</label>
+              <input type="number" id="custom-taxable-spending" min="0" step="100" inputmode="numeric" placeholder="Leave blank to use the default" aria-describedby="custom-sales-tax-result">
+              <p id="custom-sales-tax-result" aria-live="polite"></p>
+              <p>Leave this blank to use the feasibility study's assumption of $270 a year for an improved property. If you enter an amount, the calculator multiplies it by the proposed 2.5% rate and uses that as the sales tax line in your result below.</p>
+            </div>
             <details class="help-details">
-              <summary>Want to estimate your own sales-tax impact?</summary>
-              <p>Not sure what to enter? "Taxable spending" means the total you spend in a year on purchases subject to Arkansas sales tax — retail goods, restaurant meals, and most everyday services. The feasibility study's own $270 estimate works out to about <strong>$10,800/year</strong> in taxable spending ($270 ÷ 2.5%) — roughly $900 a month. That's a reasonable starting point for a typical household; adjust up or down based on your own spending.</p>
+              <summary>What counts as taxable spending?</summary>
+              <p>"Taxable spending" means what you spend in a year on purchases subject to sales tax inside the city: retail goods, restaurant meals, and most everyday services bought here. Purchases made in other towns are taxed there, not by Holiday Island. The feasibility study's $270 estimate works out to about <strong>$10,800/year</strong> in taxable spending ($270 ÷ 2.5%), roughly $900 a month.</p>
               <div class="table-wrap">
                 <table>
                   <caption>Example households</caption>
-                  <thead><tr><th>If your household spends about...</th><th class="num">Your sales-tax impact</th></tr></thead>
+                  <thead><tr><th>If your household spends about...</th><th class="num">Sales-tax impact</th></tr></thead>
                   <tbody>
                     <tr><td>$10,800/year (≈$900/mo) — the study's own assumption</td><td class="num">$270/year</td></tr>
                     <tr><td>$15,000/year (≈$1,250/mo)</td><td class="num">$375/year</td></tr>
@@ -128,14 +134,10 @@
                   </tbody>
                 </table>
               </div>
-              <div class="field">
-                <label for="custom-taxable-spending">Estimated annual taxable spending ($)</label>
-                <input type="number" id="custom-taxable-spending" min="0" step="100" inputmode="numeric" placeholder="e.g. 20000">
-              </div>
-              <p id="custom-sales-tax-result" aria-live="polite"></p>
-              <p>This is a modeled estimate based on the feasibility study's assumed household spending. It is not a fixed annual charge assessed to the household. Actual sales-tax impact will depend on the amount and type of taxable purchases a household makes. This estimate does not change the results below — it's shown separately from the study's own $270 figure so you can compare the two.</p>
+              <p>This is an estimate, not a fixed annual charge. Actual sales tax depends on the amount and type of taxable purchases a household makes.</p>
             </details>
           </fieldset>
+          <p><button type="button" class="btn btn-quiet" id="calc-reset">Reset to defaults</button></p>
         </form>
 
         <div class="calc-results">
@@ -171,7 +173,7 @@
             </div>
             <div class="card">
               <h3>Standing still is not free</h3>
-              <p>The Long Range Plan projects that HISID can no longer levy its assessment after 2037 if nothing changes. Today's bill is not a permanent option to compare against.</p>
+              <p>The Long Range Plan projects that HISID's current assessment capacity could be exhausted around 2037 under its assumptions. Today's bill is not a permanent option to compare against.</p>
               <a class="card-link" href="why-transition.html">Why this matters →</a>
             </div>
             <div class="card">
@@ -180,7 +182,7 @@
             </div>
             <div class="card">
               <h3>In line with the neighbors</h3>
-              <p>In this site's comparison, a fully transitioned Holiday Island lands within about $430 a year of Berryville, Green Forest and Eureka Springs on the same illustrative household.</p>
+              <p>In this site's comparison, a fully transitioned Holiday Island lands within about $430 a year of Berryville, Green Forest and Eureka Springs in property and sales tax on the same illustrative household. That comparison leaves out service fees, which this calculator includes.</p>
               <a class="card-link" href="tax-comparison.html">See the comparison →</a>
             </div>
           </div>
@@ -234,13 +236,13 @@
             </tr>
             <tr>
               <td>Estimated household impact of proposed 2.5% sales tax</td>
-              <td>A flat modeled estimate of +$270/year for an improved/household property, based on the feasibility study's household spending assumptions — not a calculation from your own spending, since the calculator doesn't ask for that.<sup><a href="#calc-fn1">1</a></sup></td>
+              <td>By default, a flat modeled estimate of +$270/year for an improved property, from the feasibility study's household spending assumptions, and $0 for a vacant lot. If you enter your own annual taxable spending, the calculator uses that amount × 2.5% instead.<sup><a href="#calc-fn1">1</a></sup></td>
               <td><span class="badge badge--estimate">Modeled estimate</span></td>
             </tr>
           </tbody>
         </table>
       </div>
-      <p>Two things worth calling out: the property-value fields only ever affect the two mill-rate lines — they don't change the flat fees — and the "Public Safety" and "sales tax" lines are $0 for vacant lots because those fees apply only to improved properties in the source study's own model.</p>
+      <p>Two things worth calling out: the property-value fields only ever affect the two mill-rate lines — they don't change the flat fees — and the "Public Safety" line is $0 for vacant lots, and the "sales tax" line is $0 for vacant lots unless you enter your own spending, because the source study's model applies those only to improved properties.</p>
       <ol style="font-size:0.9rem; color:var(--color-text-muted);">
         <li id="calc-fn1">The flat dollar figures — the HISID assessment removed, the Recreation and Public Safety Urban Service District fees, and the sales-tax estimate — come directly from the Mayor's feasibility study presentations: <em>"Can the City Do It All?"</em> (May 2, 2026, revised May 6) and <em>"The Future Holiday Island — Session 2: Protecting Our Citizens"</em> (July 11, 2026, revised July 13). This calculator uses the more recent July figures throughout; see the <a href="about-this-site.html#sources">Sources page</a> for full citations. <a href="#calc-formula-table">↩ back to table</a></li>
         <li id="calc-fn2">The 20% assessment ratio and the 5-mill municipal property tax rate aren't figures unique to the feasibility study — they're general features of Arkansas law: Ark. Code Ann. § 26-26-303(c) sets the 20%-of-market-value assessment ratio, and the <a href="https://law.justia.com/constitution/arkansas/article-12/section-4/" target="_blank" rel="noopener">Arkansas Constitution, Article 12, § 4</a> caps the municipal property tax a city may levy without a separate vote at 5 mills on real and personal property. The <a href="funding.html">How We'd Pay page</a> covers how the study applies this same toolkit. <a href="#calc-formula-table">↩ back to table</a></li>
@@ -345,8 +347,8 @@
       <div class="card-grid">
         <div class="card">
           <h3>The Homestead Tax Credit</h3>
-          <p>Arkansas provides a homestead property-tax credit for eligible primary residences — currently <strong>$600 per year</strong>, raised from $500 by Act 330 of 2025 (Ark. Code Ann. § 26-26-1118(a)(1)(A)), effective for the 2025 assessment year onward. The credit reduces your total real-property tax bill, including any new city portion — it is not a separate credit created specifically for the proposed city tax, and a homeowner does not receive an additional credit just because a new taxing jurisdiction is created. <strong>This calculator does not subtract the homestead credit from the modeled 5-mill city tax.</strong> For many lower-valued homes it can still offset a meaningful share of the new city tax. Confirm your current-year amount with the Carroll County Assessor or Arkansas DFA, since state law can change.</p>
-          <p style="font-size:0.85rem; color:var(--color-text-muted); margin-bottom:0;">Source: <a href="https://www.dfa.arkansas.gov/office/arkansas-assessment-coordination-division/real-property/property-tax-relief/" target="_blank" rel="noopener">Arkansas DFA — Property Tax Relief Programs</a>; <a href="https://arkleg.state.ar.us/Home/FTPDocument?path=/ACTS/2025R/Public/ACT330.pdf" target="_blank" rel="noopener">Act 330 of 2025</a>.</p>
+          <p>Arkansas provides a homestead property-tax credit for eligible primary residences — currently <strong>$675 per year</strong>, raised from $600 by Act 174 of 2026 (HB1103; Ark. Code Ann. § 26-26-1118(a)(1)(A)), effective for assessment years beginning on or after January 1, 2026. The credit reduces your total real-property tax bill, including any new city portion — it is not a separate credit created specifically for the proposed city tax, and a homeowner does not receive an additional credit just because a new taxing jurisdiction is created. <strong>This calculator does not subtract the homestead credit from the modeled 5-mill city tax.</strong> For many lower-valued homes it can still offset a meaningful share of the new city tax. Confirm your current-year amount with the Carroll County Assessor or Arkansas DFA, since state law can change.</p>
+          <p style="font-size:0.85rem; color:var(--color-text-muted); margin-bottom:0;">Source: <a href="https://www.dfa.arkansas.gov/office/arkansas-assessment-coordination-division/real-property/property-tax-relief/" target="_blank" rel="noopener">Arkansas DFA — Property Tax Relief Programs</a>; <a href="https://www.arkleg.state.ar.us/Bills/Detail?ddBienniumSession=2025%2F2026F&amp;id=HB1103" target="_blank" rel="noopener">Act 174 of 2026 (HB1103)</a>.</p>
         </div>
         <div class="card">
           <h3>The 65+ / disabled assessment freeze</h3>

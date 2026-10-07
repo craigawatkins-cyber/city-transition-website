@@ -188,7 +188,7 @@ const HI_DATA = {
     currentMillRate: 0.0008, // 20% assessed x 0.004 (4 mills, levied by the City since 2026)
     newMillRate: 0.0002, // the difference: one additional mill, counted as new
     sewerLoanAssessmentReduction: 54.25, // LRP: assessment drops by this once the sewer loan is paid
-    salesTaxHouseholdEstAnnual: 270, // flat estimate, improved/household properties only
+    salesTaxHouseholdEstAnnual: 270, // default flat estimate, improved/household properties only; replaced when the user enters their own taxable spending
   },
 
   // ---- Published worked examples (for the static reference table) ----
