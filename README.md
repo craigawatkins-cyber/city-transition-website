@@ -6,26 +6,28 @@ The site's foundation is the **September 22, 2026 City/HISID Long Range Plan**, 
 
 This is an independent community education project, not an official publication of the City or HISID.
 
-This is a plain static site: HTML and CSS only, with no build step and no framework. It deploys through GitHub Pages from the root of `main`.
+This is a plain static site: HTML, CSS, and a little vanilla JavaScript for the calculator, with no build step and no framework. It deploys through GitHub Pages from the root of `main`.
 
 ## Previewing locally
 
 Every page works by simply double-clicking the `.html` file and opening it in a browser — there's no fetch-based include or build step to worry about.
 
-No page currently loads any JavaScript. If you ever add features that need a local server (e.g. testing `fetch()` calls), run one from the repo root, for example `python -m http.server 8000`, then browse to `http://localhost:8000/`.
+Only `calculator.html` loads JavaScript (`assets/js/data.js` and `assets/js/calculator.js`), which works over `file://` without a server. If you ever add features that need a local server (e.g. testing `fetch()` calls), run one from the repo root, for example `python -m http.server 8000`, then browse to `http://localhost:8000/`.
 
 ## Project structure
 
 ```
 index.html, why-transition.html, long-range-plan.html, budget-today.html,
 services.html, public-safety.html, funding.html, growth-plan.html,
-tax-comparison.html, timeline.html, faq.html,
+tax-comparison.html, calculator.html, timeline.html, faq.html,
 about-this-site.html
-                                     — the 12 site pages
+                                     — the 13 site pages
 favicon.svg
 assets/css/base.css                 — design tokens, reset, typography
 assets/css/components.css           — nav, cards, tables, callouts, bar charts,
                                        phase timeline, status badges, assessment flow
+assets/js/data.js                   — constants used by the cost calculator
+assets/js/calculator.js             — cost calculator logic
 assets/fonts/                       — self-hosted Montserrat & Source Serif 4 (variable fonts, no CDN)
 docs/sources/                       — extracted text of the source documents, for fact-checking
 ```

@@ -2,12 +2,453 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="robots" content="noindex">
-<meta http-equiv="refresh" content="0; url=funding.html">
-<link rel="canonical" href="funding.html">
-<title>Holiday Island's Future</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Will This Cost Me? — Holiday Island's Future</title>
+<meta name="description" content="An interactive calculator estimating how a full HISID-to-City transition could change your annual costs, based on the earlier feasibility-study figures.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/components.css">
 </head>
 <body>
-<p><a href="funding.html">Continue to How We'd Pay</a></p>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="site-header">
+  <div class="container">
+    <a class="site-brand" href="index.html">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="15" fill="#fff" stroke="#F2B134" stroke-width="2"/><circle cx="13" cy="12" r="5" fill="#F2B134" opacity="0.85"/><path d="M17 6.5 L22.5 17 L19.5 17 L24 25 L10 25 L14.5 17 L11.5 17 Z" fill="#2E6B3E"/></svg>
+      <span>Holiday Island's Future<span class="tag">A community conversation</span></span>
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="why-transition.html">Why This Matters</a></li>
+        <li><a href="long-range-plan.html">Long Range Plan</a></li>
+        <li><a href="budget-today.html">The Budget</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="public-safety.html">Public Safety</a></li>
+        <li><a href="funding.html">How We'd Pay</a></li>
+        <li><a href="growth-plan.html">Growth Plan</a></li>
+        <li><a href="tax-comparison.html">Tax Comparison</a></li>
+        <li><a href="calculator.html" aria-current="page">Cost Calculator</a></li>
+        <li><a href="timeline.html">Timeline</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="about-this-site.html">Sources &amp; About This Site</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<noscript><div class="noscript-note">JavaScript is off in your browser. This calculator needs JavaScript to compute results — every other page on this site works without it. See the published worked examples further down this page for reference figures in the meantime.</div></noscript>
+
+<main id="main">
+  <section class="section">
+    <div class="container">
+      <h1>What will this cost me?</h1>
+      <p class="lede">Every property is different. Use the calculator below for a planning estimate of how a full transition could change your annual costs. It uses the formulas from the Mayor's earlier feasibility study, which remain the most detailed public cost estimates. The September 2026 <a href="long-range-plan.html">Long Range Plan</a> sets the sequence but leaves most dollar amounts to future budgets.</p>
+
+      <div class="disclaimer">
+        <strong>Before you start:</strong> these are earlier feasibility-study estimates from the May and July 2026 presentations<sup class="cite" data-src="may july"><a href="#ref-1" aria-label="Source 1">1</a>,<a href="#ref-2" aria-label="Source 2">2</a></sup> — not adopted city rates or final figures. Actual costs depend on decisions still to be made by a sales-tax election, petitions, annual budgets, and the City Council. Use this as a planning estimate, not a bill.
+      </div>
+
+      <details class="help-details">
+        <summary>How this calculator relates to the Long Range Plan</summary>
+        <p><strong>It shows the end state, not the path.</strong> The Long Range Plan moves services in five phases from 2027 to 2030 and beyond, with the HISID assessment stepping down along the way. This calculator compares today with a completed transition, when the whole assessment is gone and all the new City charges are in place. In the years between, you would pay a reduced assessment plus only the charges that have started. See the <a href="long-range-plan.html#assessment">assessment diagram</a>.</p>
+        <p><strong>The property tax line counts only one additional mill.</strong> The City currently levies 4 mills, and millage is set each year.<sup class="cite" data-src="sotc lrp"><a href="#ref-3" aria-label="Source 3">3</a>,<a href="#ref-4" aria-label="Source 4">4</a></sup> The plan's projections assume 5. Because you already pay the first 4, the calculator counts only the fifth as new and shows the existing 4 separately for reference. The earlier feasibility study, and earlier versions of this page, counted all 5 as new.</p>
+        <p><strong>The Public Safety fee is the July 2026 estimate.</strong> The Long Range Plan gives a range of $50 to $56 a month ($600 to $672 a year) for the Sheriff's contract option, which includes the $632 used here<sup class="cite" data-src="lrp july"><a href="#ref-4" aria-label="Source 4">4</a>,<a href="#ref-2" aria-label="Source 2">2</a></sup>. It gives no figure for a police department.</p>
+        <p><strong>The Recreation fee is the May 2026 estimate.</strong> The Long Range Plan says the Parks and Recreation fee is not yet established and will be determined in 2029<sup class="cite" data-src="lrp"><a href="#ref-4" aria-label="Source 4">4</a></sup>.</p>
+        <p><strong>The sales tax is a proposed ballot measure</strong> on November 3, 2026. It is included as if it passes.</p>
+      </details>
+
+      <div class="calc">
+        <form id="impact-form">
+          <fieldset>
+            <legend>1. Your property</legend>
+            <div class="radio-row">
+              <label class="radio-option"><input type="radio" name="property-type" value="improved" checked> House or developed property</label>
+              <label class="radio-option"><input type="radio" name="property-type" value="unimproved"> Vacant lot</label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>2. Property value (used for the city property tax)</legend>
+            <div class="field" id="home-value-field">
+              <label for="home-value">County estimated market value of your property ($)</label>
+              <input type="number" id="home-value" min="0" step="1000" value="150000" inputmode="numeric">
+              <p>Enter the "Estimated Market Value" shown by your county assessor — land plus any home or structure. Do not enter the "Full Assessed Value (20%)" or "Taxable Value." The calculator applies the 20% assessment ratio for you and counts only the one additional mill in the planning assumption.</p>
+              <details class="help-details" open>
+                <summary>Which number should I enter?</summary>
+                <p>Your county assessor may show several different values for the same property. For this calculator, enter the <strong>Estimated Market Value</strong>. Illustrative example — not a specific property:</p>
+                <div class="table-wrap">
+                  <table>
+                    <caption>Which value to enter</caption>
+                    <thead><tr><th>Assessor's field</th><th class="num">Example amount</th></tr></thead>
+                    <tbody>
+                      <tr><td>Estimated Market Value <strong>← enter this</strong></td><td class="num">$300,000</td></tr>
+                      <tr><td>Full Assessed Value (20% of market value)</td><td class="num">$60,000</td></tr>
+                      <tr><td>Taxable Value (can be lower; see below)</td><td class="num">$52,000</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p>These are made-up round numbers for illustration, not taken from any real parcel. Look up your own property's Estimated Market Value and enter that. Do not enter the assessed ($60,000) or taxable ($52,000) kind of figure — the calculator applies the 20% assessment ratio to the full market value you enter.</p>
+              </details>
+              <details class="help-details">
+                <summary>How is the city property tax calculated?</summary>
+                <p>A mill is $1 of tax for every $1,000 of <em>assessed</em> value, and Arkansas assesses real property at 20% of market value. So each mill costs 0.02% of market value: $60 a year on a $300,000 home.</p>
+                <p>The City already levies 4 mills ($240 a year on that home). The Long Range Plan's planning assumption is 5 mills ($300), the most the Arkansas constitution allows. This calculator counts only the difference, $60, as new, because the first 4 mills are already on your tax bill.</p>
+                <p>Millage is set each year by the City Council. If it stays at 4 mills, this line would be $0.</p>
+              </details>
+            </div>
+            <div class="field" id="vehicle-value-field">
+              <label for="vehicle-value">Total household vehicle market value ($, optional)</label>
+              <input type="number" id="vehicle-value" min="0" step="1000" value="30000" inputmode="numeric">
+              <p>If your county assessor provides a market/appraised value for your vehicles, enter the total household value here. Do not enter the 20% assessed value — the calculator applies the same formula used for real property.</p>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>3. Public Safety option <a href="public-safety.html" style="font-weight:400; font-size:0.85rem;">— this hasn't been decided, learn more</a></legend>
+            <div class="radio-row">
+              <label class="radio-option"><input type="radio" name="safety-option" value="sheriff" checked> Keep sheriff/deputy contract ($632/yr)</label>
+              <label class="radio-option"><input type="radio" name="safety-option" value="police"> Form a police department ($888/yr)</label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>4. Optional: your own sales-tax estimate</legend>
+            <details class="help-details">
+              <summary>Want to estimate your own sales-tax impact?</summary>
+              <p>Not sure what to enter? "Taxable spending" means the total you spend in a year on purchases subject to Arkansas sales tax — retail goods, restaurant meals, and most everyday services. The feasibility study's own $270 estimate works out to about <strong>$10,800/year</strong> in taxable spending ($270 ÷ 2.5%) — roughly $900 a month. That's a reasonable starting point for a typical household; adjust up or down based on your own spending.</p>
+              <div class="table-wrap">
+                <table>
+                  <caption>Example households</caption>
+                  <thead><tr><th>If your household spends about...</th><th class="num">Your sales-tax impact</th></tr></thead>
+                  <tbody>
+                    <tr><td>$10,800/year (≈$900/mo) — the study's own assumption</td><td class="num">$270/year</td></tr>
+                    <tr><td>$15,000/year (≈$1,250/mo)</td><td class="num">$375/year</td></tr>
+                    <tr><td>$20,000/year (≈$1,670/mo)</td><td class="num">$500/year</td></tr>
+                    <tr><td>$30,000/year (≈$2,500/mo)</td><td class="num">$750/year</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="field">
+                <label for="custom-taxable-spending">Estimated annual taxable spending ($)</label>
+                <input type="number" id="custom-taxable-spending" min="0" step="100" inputmode="numeric" placeholder="e.g. 20000">
+              </div>
+              <p id="custom-sales-tax-result" aria-live="polite"></p>
+              <p>This is a modeled estimate based on the feasibility study's assumed household spending. It is not a fixed annual charge assessed to the household. Actual sales-tax impact will depend on the amount and type of taxable purchases a household makes. This estimate does not change the results below — it's shown separately from the study's own $270 figure so you can compare the two.</p>
+            </details>
+          </fieldset>
+        </form>
+
+        <div class="calc-results">
+          <h2 style="margin-top:0;">Your estimated household impact</h2>
+          <p class="calc-total" id="calc-total"></p>
+          <p id="calc-total-summary" aria-live="polite"></p>
+          <p class="source-note" id="calc-existing-note"></p>
+          <p>This is a planning estimate based on the earlier feasibility-study figures and the assumptions you entered. It is not an adopted tax bill. The headline figure is the change once the transition is complete; the "When each change arrives" table below shows how it phases in.</p>
+          <p><strong>This shows the change a full transition would make — not your full tax bill.</strong> It does not include property tax you already pay today (Carroll County, school district, or other existing local millage) or sales tax you already pay today (Arkansas's state rate or Carroll County's existing rate). Those don't change under this proposal, so they're left out. It also leaves out the City's existing 4-mill property tax, which you already pay; only the additional mill in the planning assumption is counted. Only the HISID assessment (removed) and the new city charges (added) are shown below. For your full combined tax picture, including current rates, see the <a href="tax-comparison.html">Tax Comparison page</a>.</p>
+          <div class="table-wrap">
+            <table>
+              <caption>Line-item breakdown</caption>
+              <thead><tr><th>Item</th><th class="num">Annual amount</th><th>Source</th></tr></thead>
+              <tbody id="calc-result-body"></tbody>
+            </table>
+          </div>
+          <h3>When each change arrives</h3>
+          <p>The Long Range Plan moves services in phases, so the change does not land in a single year. Dates after 2027 are the plan's targets, and each step depends on the vote, petition or budget noted.</p>
+          <div class="table-wrap">
+            <table>
+              <caption>How the change phases in, for the values you entered</caption>
+              <thead><tr><th>When</th><th>What changes on your bills</th><th>Amount</th></tr></thead>
+              <tbody id="calc-phase-body"></tbody>
+            </table>
+          </div>
+          <p class="source-note">Phases and the $54.25 sewer-loan reduction are from the Long Range Plan, September 22, 2026. The plan does not state the other assessment reductions; they will be set in HISID's budgets. Fee amounts are earlier feasibility-study estimates. The 2027 sales tax start date is from the City's January 2026 State of the City.</p>
+
+          <h3>Putting the number in context</h3>
+          <div class="card-grid">
+            <div class="card">
+              <h3>What it pays for</h3>
+              <p>Sheriff or police coverage, the fire department, about 69 miles of roads, and the golf courses, marina, pools and trails. The costs are not new; the way they are paid for is.</p>
+            </div>
+            <div class="card">
+              <h3>Standing still is not free</h3>
+              <p>The Long Range Plan projects that HISID can no longer levy its assessment after 2037 if nothing changes. Today's bill is not a permanent option to compare against.</p>
+              <a class="card-link" href="why-transition.html">Why this matters →</a>
+            </div>
+            <div class="card">
+              <h3>Shared with visitors</h3>
+              <p>The sales tax is the one piece paid by everyone who spends money here, not only by property owners. Your own share depends on how much you buy locally.</p>
+            </div>
+            <div class="card">
+              <h3>In line with the neighbors</h3>
+              <p>In this site's comparison, a fully transitioned Holiday Island lands within about $430 a year of Berryville, Green Forest and Eureka Springs on the same illustrative household.</p>
+              <a class="card-link" href="tax-comparison.html">See the comparison →</a>
+            </div>
+          </div>
+
+          <div class="disclaimer">
+            These figures use the July 2026 (Session 2) Public Safety fee estimates and the source study's own flat-fee and mill-rate formulas. See the published examples below to cross-check against the original May 2026 presentation.
+          </div>
+          <details class="help-details" id="calc-how-calculated">
+            <summary>How was this calculated?</summary>
+            <ol id="calc-how-list"></ol>
+          </details>
+        </div>
+      </div>
+
+      <h2>How these numbers are calculated</h2>
+      <p>The calculator adds together six line items using the source study's flat fees, with one adjustment: the study counted a full 5-mill city property tax as new, and this calculator counts only the one mill above the 4 the City already levies. Your net annual change is simply the sum of these six numbers.</p>
+
+      <div class="disclaimer">
+        <strong>Important:</strong> This calculator reproduces the simplified property-tax methodology used in the Holiday Island feasibility study. Actual Arkansas property taxes are calculated using taxable assessed value and applicable local millage rates. Amendment 79 and other Arkansas property-tax provisions can cause a property's taxable assessed value to differ from a simple 20% calculation. Your actual future tax bill may therefore differ from this estimate. This calculator is not an official Arkansas tax calculator, and the figures below are not final city rates.
+      </div>
+
+      <div class="table-wrap">
+        <table id="calc-formula-table">
+          <caption>Formula behind each line item</caption>
+          <thead><tr><th>Line item</th><th>How it's calculated</th><th>Source</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>HISID assessment goes away</td>
+              <td>A flat amount is subtracted: −$834.60/year for an improved (developed) property, or −$513.60/year for a vacant lot — the current HISID assessment for each category, which the transition eliminates.<sup><a href="#calc-fn1">1</a></sup></td>
+              <td><span class="badge badge--current">Current charge (ending)</span></td>
+            </tr>
+            <tr>
+              <td>Recreation Urban Service District fee</td>
+              <td>A flat +$187.85/year, charged to every property regardless of improved/vacant status or property value.<sup><a href="#calc-fn1">1</a></sup></td>
+              <td><span class="badge badge--estimate">Early estimate (set in 2029)</span></td>
+            </tr>
+            <tr>
+              <td>Public Safety Urban Service District fee</td>
+              <td>A flat fee charged only to improved properties: +$632/year if the city keeps the sheriff/deputy contract, or +$888/year if it forms its own police department — whichever option you select. Vacant lots aren't billed for this fee.<sup><a href="#calc-fn1">1</a></sup></td>
+              <td><span class="badge badge--study">Proposed (study figure)</span></td>
+            </tr>
+            <tr>
+              <td>City property tax, one additional mill (real estate)</td>
+              <td>Your entered property value × 0.0002. Arkansas assesses real property at 20% of its value, and one mill is 0.1% of assessed value, so one mill costs 0.02% of the value you enter. The City already levies 4 mills; the planning assumption is 5, the constitutional maximum, so only the fifth mill is counted as new.<sup><a href="#calc-fn2">2</a></sup></td>
+              <td><span class="badge badge--study">Planning assumption (4 to 5 mills)</span></td>
+            </tr>
+            <tr>
+              <td>City property tax, one additional mill (vehicles)</td>
+              <td>Your entered vehicle value × 0.0002, the same one-mill formula as real property. This only applies to improved (occupied) properties, since the source model doesn't attribute household vehicles to vacant lots.<sup><a href="#calc-fn2">2</a></sup></td>
+              <td><span class="badge badge--study">Planning assumption (4 to 5 mills)</span></td>
+            </tr>
+            <tr>
+              <td>Estimated household impact of proposed 2.5% sales tax</td>
+              <td>A flat modeled estimate of +$270/year for an improved/household property, based on the feasibility study's household spending assumptions — not a calculation from your own spending, since the calculator doesn't ask for that.<sup><a href="#calc-fn1">1</a></sup></td>
+              <td><span class="badge badge--estimate">Modeled estimate</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Two things worth calling out: the property-value fields only ever affect the two mill-rate lines — they don't change the flat fees — and the "Public Safety" and "sales tax" lines are $0 for vacant lots because those fees apply only to improved properties in the source study's own model.</p>
+      <ol style="font-size:0.9rem; color:var(--color-text-muted);">
+        <li id="calc-fn1">The flat dollar figures — the HISID assessment removed, the Recreation and Public Safety Urban Service District fees, and the sales-tax estimate — come directly from the Mayor's feasibility study presentations: <em>"Can the City Do It All?"</em> (May 2, 2026, revised May 6) and <em>"The Future Holiday Island — Session 2: Protecting Our Citizens"</em> (July 11, 2026, revised July 13). This calculator uses the more recent July figures throughout; see the <a href="about-this-site.html#sources">Sources page</a> for full citations. <a href="#calc-formula-table">↩ back to table</a></li>
+        <li id="calc-fn2">The 20% assessment ratio and the 5-mill municipal property tax rate aren't figures unique to the feasibility study — they're general features of Arkansas law: Ark. Code Ann. § 26-26-303(c) sets the 20%-of-market-value assessment ratio, and the <a href="https://law.justia.com/constitution/arkansas/article-12/section-4/" target="_blank" rel="noopener">Arkansas Constitution, Article 12, § 4</a> caps the municipal property tax a city may levy without a separate vote at 5 mills on real and personal property. The <a href="funding.html">How We'd Pay page</a> covers how the study applies this same toolkit. <a href="#calc-formula-table">↩ back to table</a></li>
+      </ol>
+
+      <h2>Market value, assessed value, and taxable value — three different numbers</h2>
+      <p>Arkansas county assessors track three distinct figures for every property. Knowing which one is which matters for this calculator — and for reading your own assessment notice.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <h3>Market value</h3>
+          <p>What the county estimates the property is worth. This is the number this calculator asks you to enter.</p>
+        </div>
+        <div class="card">
+          <h3>Full assessed value</h3>
+          <p>Generally 20% of market value for Arkansas real property. Do not enter this figure into the calculator — it already applies the 20% ratio for you.</p>
+        </div>
+        <div class="card">
+          <h3>Taxable value</h3>
+          <p>The value actually used to calculate a real property tax bill, after Amendment 79's caps and any applicable credits are factored in. This can legitimately be lower than the full assessed value.</p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <caption>Illustrative example — not a specific property</caption>
+          <thead><tr><th>Assessor's field</th><th class="num">Example amount</th></tr></thead>
+          <tbody>
+            <tr><td>Estimated Market Value</td><td class="num">$300,000</td></tr>
+            <tr><td>Full Assessed (20% Market Value)</td><td class="num">$60,000</td></tr>
+            <tr><td>Taxable Value (illustrative; lower because of Amendment 79's cap on annual increases)</td><td class="num">$52,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>These numbers can all legitimately be different for the same property; the taxable value shown is an invented figure to make that point. This calculator uses <strong>Estimated Market Value</strong> — see "Which number should I enter?" above the property-value field.</p>
+
+      <h2>Published worked examples (May 2, 2026 presentation)<sup class="cite" data-src="may"><a href="#ref-1" aria-label="Source 1">1</a></sup></h2>
+      <p><strong>These are the study's original figures, shown for reference.</strong> They count the full 5 mills as a new tax and use the May fee estimates, so their totals are higher than the live calculator above. For a $300,000 home the difference is $240 a year in property tax the City already collects.</p>
+      <p>For reference, here are the exact worked examples from the original feasibility deck, using that presentation's original fee figures ($634.80 sheriff / $860.78 police per improved property — since refined to $632 / $888 in the July 2026 update used above).</p>
+
+      <h3>With sheriff/deputy contract</h3>
+      <div class="table-wrap">
+        <table>
+          <caption>Original published example — sheriff contract scenario</caption>
+          <thead><tr><th>Line item</th><th class="num">$20K vacant lot</th><th class="num">$150K house</th><th class="num">$300K house</th></tr></thead>
+          <tbody>
+            <tr><td>HISID assessment goes away</td><td class="num negative">-$513.60</td><td class="num negative">-$834.60</td><td class="num negative">-$834.60</td></tr>
+            <tr><td>Recreation USD fee</td><td class="num positive">+$187.85</td><td class="num positive">+$187.85</td><td class="num positive">+$187.85</td></tr>
+            <tr><td>Public Safety USD fee</td><td class="num">$0.00</td><td class="num positive">+$634.80</td><td class="num positive">+$634.80</td></tr>
+            <tr><td>5-mill property tax</td><td class="num positive">+$20.00</td><td class="num positive">+$150.00</td><td class="num positive">+$300.00</td></tr>
+            <tr><td>5-mill personal property tax</td><td class="num">$0.00</td><td class="num positive">+$20.00</td><td class="num positive">+$40.00</td></tr>
+            <tr><td>New 2.5% sales tax (est.)</td><td class="num">$0.00</td><td class="num positive">+$270.00</td><td class="num positive">+$270.00</td></tr>
+            <tr><th scope="row">Net annual change</th><td class="num negative"><strong>-$305.75</strong></td><td class="num positive"><strong>+$428.05</strong></td><td class="num positive"><strong>+$598.05</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>With a new police department</h3>
+      <div class="table-wrap">
+        <table>
+          <caption>Original published example — police department scenario</caption>
+          <thead><tr><th>Line item</th><th class="num">$20K vacant lot</th><th class="num">$150K house</th><th class="num">$300K house</th></tr></thead>
+          <tbody>
+            <tr><td>HISID assessment goes away</td><td class="num negative">-$513.60</td><td class="num negative">-$834.60</td><td class="num negative">-$834.60</td></tr>
+            <tr><td>Recreation USD fee</td><td class="num positive">+$187.85</td><td class="num positive">+$187.85</td><td class="num positive">+$187.85</td></tr>
+            <tr><td>Public Safety USD fee</td><td class="num">$0.00</td><td class="num positive">+$860.78</td><td class="num positive">+$860.78</td></tr>
+            <tr><td>5-mill property tax</td><td class="num positive">+$20.00</td><td class="num positive">+$150.00</td><td class="num positive">+$300.00</td></tr>
+            <tr><td>5-mill personal property tax</td><td class="num">$0.00</td><td class="num positive">+$30.00</td><td class="num positive">+$40.00</td></tr>
+            <tr><td>New 2.5% sales tax (est.)</td><td class="num">$0.00</td><td class="num positive">+$270.00</td><td class="num positive">+$270.00</td></tr>
+            <tr><th scope="row">Net annual change</th><td class="num negative"><strong>-$305.75</strong></td><td class="num positive"><strong>+$664.03</strong></td><td class="num positive"><strong>+$824.03</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="fixed-income">A note for residents on a fixed income</h2>
+      <p>If you're retired, on Social Security, or managing a fixed monthly budget, "new tax" understandably sounds like unwelcome news no matter how the rest of this site frames it. That reaction deserves a straight answer, not a sales pitch.</p>
+
+      <div class="disclaimer">
+        <strong>A note on this section:</strong> like the Growth Plan and Tax Comparison pages, the material below isn't from the Mayor's feasibility study — it's independently researched from the Arkansas Department of Finance and Administration (property tax relief programs) and the National Recreation and Park Association (amenities and property values). Confirm your own eligibility and the current homestead credit amount with the Carroll County Assessor's office; state lawmakers revised those figures more than once in 2026.
+      </div>
+
+      <h3>What "ad valorem" means — and why it changes who pays what</h3>
+      <p><em>Ad valorem</em> is Latin for "according to value." It's the standard term for a tax calculated as a percentage of what something is worth, rather than a flat dollar amount charged to everyone alike. City property tax, modeled here at the 5-mill planning assumption, is an ad valorem tax: every property is taxed at the same <em>rate</em> — 0.1% of its estimated market value — so the dollar amount scales with what the property is actually worth. HISID's current assessment works the opposite way: it's a flat, per-property charge that doesn't look at value at all, so a modest home and a much larger one on the lake pay the identical dollar amount today.</p>
+
+      <div class="table-wrap">
+        <table>
+          <caption>Same flat assessment today, regardless of value</caption>
+          <thead><tr><th>Charge</th><th class="num">$150,000 home</th><th class="num">$850,000 lakefront home</th></tr></thead>
+          <tbody>
+            <tr><td>Today's flat HISID assessment</td><td class="num">$834.60</td><td class="num">$834.60</td></tr>
+            <tr><td>...as a share of the home's value</td><td class="num">0.56%</td><td class="num">0.10%</td></tr>
+            <tr><td>City ad valorem property tax at 5 mills (planning assumption)</td><td class="num">$150.00</td><td class="num">$850.00</td></tr>
+            <tr><td>...as a share of the home's value</td><td class="num">0.10%</td><td class="num">0.10%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Today, both homes pay the exact same $834.60 HISID assessment — which means, measured against what each home is worth, the $150,000 home is paying more than five times the effective rate of the $850,000 home. Under an ad valorem property tax, both properties pay the same 0.1% rate: the lakefront home pays more in dollars, as you'd expect from a property worth over five times as much, but the two homes carry the same proportional burden. This fairness argument is about how the property-tax component is distributed, not about whether your total bill goes up or down overall — use the calculator above for your own full picture.</p>
+
+      <h3>The flat assessment you pay today has no relief built in. Real property tax does.</h3>
+      <p>HISID's current assessment is a flat charge — everyone in a given category pays the same amount, with no discount for income or age. Arkansas's constitutional property tax protections for homeowners only apply to the standard annual property tax billed on assessed value, not to a special-district assessment like HISID's. That means the city property tax, unwelcome as a "new" tax sounds, is also what makes these protections available to Holiday Island homeowners for the first time:</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <h3>The Homestead Tax Credit</h3>
+          <p>Arkansas provides a homestead property-tax credit for eligible primary residences — currently <strong>$600 per year</strong>, raised from $500 by Act 330 of 2025 (Ark. Code Ann. § 26-26-1118(a)(1)(A)), effective for the 2025 assessment year onward. The credit reduces your total real-property tax bill, including any new city portion — it is not a separate credit created specifically for the proposed city tax, and a homeowner does not receive an additional credit just because a new taxing jurisdiction is created. <strong>This calculator does not subtract the homestead credit from the modeled 5-mill city tax.</strong> For many lower-valued homes it can still offset a meaningful share of the new city tax. Confirm your current-year amount with the Carroll County Assessor or Arkansas DFA, since state law can change.</p>
+          <p style="font-size:0.85rem; color:var(--color-text-muted); margin-bottom:0;">Source: <a href="https://www.dfa.arkansas.gov/office/arkansas-assessment-coordination-division/real-property/property-tax-relief/" target="_blank" rel="noopener">Arkansas DFA — Property Tax Relief Programs</a>; <a href="https://arkleg.state.ar.us/Home/FTPDocument?path=/ACTS/2025R/Public/ACT330.pdf" target="_blank" rel="noopener">Act 330 of 2025</a>.</p>
+        </div>
+        <div class="card">
+          <h3>The 65+ / disabled assessment freeze</h3>
+          <p>If you're 65 or older, or disabled, you can apply with the county assessor to freeze your home's assessed value (no income limit was found to apply to this specific freeze). This isn't automatic — you must file the application. Once approved, that assessed value stops rising due to reappraisal, even as Holiday Island grows and property values climb, as this site's <a href="growth-plan.html">Growth Plan</a> hopes they will. This does <strong>not</strong> guarantee your entire future city tax bill stays flat — millage rates, Urban Service District fees, and other charges can still change even with a frozen assessed value.</p>
+        </div>
+        <div class="card">
+          <h3>The 5% annual growth cap</h3>
+          <p>Even without the senior/disabled freeze, Arkansas Amendment 79 caps how much any homestead's assessed value can rise in a single year from reappraisal at 5% — a guardrail against a sudden spike, for every homeowner, at any age. Exceptions apply for new construction, substantial improvements, and newly discovered property.</p>
+        </div>
+      </div>
+
+      <h3>The one part of this bill that flexes with you</h3>
+      <p>Unlike a flat assessment or a fixed fee, the proposed 2.5% sales tax would only apply to what you actually spend — a lighter spending year naturally means a smaller share of this specific cost, the same way it would with any sales tax anywhere. That's real flexibility a flat fee simply can't offer. It's also worth remembering that every dollar spent here rather than elsewhere does double duty: it covers this cost today, and it strengthens the same local tax base the <a href="growth-plan.html">Growth Plan</a> depends on for keeping everyone's share manageable over time.</p>
+
+      <h3>You don't have to golf for these fees to work in your favor</h3>
+      <p>Not everyone golfs, boats, or swims — and it's a completely fair question why every improved property pays into the Recreation Urban Service District fee regardless. The honest answer is that these amenities aren't really a golfer's benefit or a boater's benefit; they're a homeowner's benefit, whether or not you ever set foot on the course.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <h3>They support your home's value</h3>
+          <p>A review of dozens of studies by the National Recreation and Park Association found homes near parks and recreational amenities are commonly worth 8% to 20% more than comparable homes without them — and separate research on golf-adjacent homes finds a similar 8%–12% premium. That value shows up whether the owner ever uses the amenity or not; buyers pay for the community they're moving into, not just the house.</p>
+        </div>
+        <div class="card">
+          <h3>They're what brings the next buyer to the table</h3>
+          <p>Nearly three in four U.S. adults say access to parks or recreation is an important factor in choosing where to live, per the same research. When it's time to sell, "lake town with two golf courses, a marina, and pools" is a meaningfully stronger listing than "lake town" alone — and per the <a href="growth-plan.html">Growth Plan</a>, more buyers moving in means a bigger tax base sharing these same costs going forward.</p>
+        </div>
+        <div class="card">
+          <h3>Letting them decline would cost everyone more</h3>
+          <p>The flip side is real too: research on golf courses that close after losing their funding shows the effect can run the other way, dragging nearby property values down with them. That's the risk this whole transition is trying to get ahead of — HISID's assessment revenue for recreation isn't guaranteed to hold, and its loss wouldn't stay confined to the golfers.</p>
+        </div>
+      </div>
+      <p style="font-size:0.9rem; color:var(--color-text-muted);">Sources: <a href="https://www.nrpa.org/our-work/building-a-movement/parks-and-recreation-is-essential/" target="_blank" rel="noopener">National Recreation and Park Association</a>; <a href="https://www.tandfonline.com/doi/pdf/10.22300/1949-8276.11.1.2" target="_blank" rel="noopener">"The Impact of Shuttered Golf Courses on Property Values"</a>.</p>
+
+      <p>None of that erases the honest fact that the Recreation and Public Safety fees are flat, per-property charges with no income-based discount — that's still true, and worth saying plainly rather than glossing over. But "I don't use it" and "it doesn't benefit me" aren't quite the same thing here.</p>
+
+      <p>None of this changes the honest bottom line either: for most improved properties, this transition is a net cost increase, not a decrease. Use the calculator above with your own numbers to see your real one, not a hypothetical. But it's not an increase without guardrails — and if it turns out to be more than the community is willing to accept, the <a href="timeline.html">built-in off-ramps</a> — the November vote and two later petitions — exist specifically so residents can say so.</p>
+
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="faq.html">Have questions about these numbers? →</a>
+        <a class="btn btn-quiet" href="timeline.html">See what happens next →</a>
+      </div>
+    </div>
+  </section>
+  <!-- refs:start -->
+  <section class="references" id="references" aria-labelledby="references-heading">
+    <div class="container">
+      <h2 id="references-heading">Sources cited on this page</h2>
+      <ol>
+        <li id="ref-1">Mayor Dan Kees, <em>"Can the City Do It All?" — A Feasibility Study</em>, presented May 2, 2026 (updated May 6, 2026). Earlier feasibility estimate, not an adopted figure. Posted on the City website under About/Contact → Services. <a href="https://www.cityofholidayisland.com/services-1" target="_blank" rel="noopener">Link</a></li>
+        <li id="ref-2">Mayor Dan Kees, <em>"The Future Holiday Island — Session 2: Protecting Our Citizens,"</em> presented July 11, 2026 (revised July 13, 2026). Earlier feasibility estimate, not an adopted figure. Presented in a public forum.</li>
+        <li id="ref-3">City of Holiday Island, "State of the City: Planning for Holiday Island's Future," January 2026. <a href="https://www.cityofholidayisland.com/post/january-16-2026-state-of-the-city-planning-for-holiday-island-s-future" target="_blank" rel="noopener">Link</a></li>
+        <li id="ref-4">City of Holiday Island &amp; Holiday Island Suburban Improvement District, <em>Long Range Plan</em>, September 22, 2026 (Resolution 2026-015). <a href="https://drive.google.com/file/d/1ul3-1l40UpRCqN19zxTP7dAHxp4odrPl/view" target="_blank" rel="noopener">Link</a></li>
+      </ol>
+    </div>
+  </section>
+  <!-- refs:end -->
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>Holiday Island's Future</h4>
+        <p>An independent, resident-built community education project about the transition of services from HISID to the City of Holiday Island. Not an official publication of the City or HISID.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="why-transition.html">Why This Matters</a></li>
+          <li><a href="long-range-plan.html">Long Range Plan</a></li>
+          <li><a href="budget-today.html">The Budget</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="funding.html">How We'd Pay</a></li>
+          <li><a href="growth-plan.html">Growth Plan</a></li>
+          <li><a href="tax-comparison.html">Tax Comparison</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="calculator.html">Cost Calculator</a></li>
+          <li><a href="timeline.html">Timeline &amp; Next Steps</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="public-safety.html">Public Safety Decision</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>About</h4>
+        <ul>
+          <li><a href="about-this-site.html">Sources &amp; About This Site</a></li>
+          <li><a href="https://drive.google.com/file/d/1ul3-1l40UpRCqN19zxTP7dAHxp4odrPl/view" target="_blank" rel="noopener">Official Long Range Plan (PDF)</a></li>
+          <li><a href="https://www.cityofholidayisland.com" target="_blank" rel="noopener">City of Holiday Island official site</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Holiday Island's Future is an independent, resident-built community education project. It is not an official publication of the City of Holiday Island or HISID. This site incorporates information from the September 22, 2026 City/HISID Long Range Plan as well as earlier public feasibility presentations and other public documents. Official plans, budgets, tax rates, assessments, petitions, votes and legal actions may change. When information conflicts, the most recent official source should be given priority. Last updated: October 2026.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/calculator.js"></script>
 </body>
 </html>
