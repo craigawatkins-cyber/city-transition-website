@@ -222,11 +222,12 @@ const HI_DATA = {
   ],
 
   // ---- Peer improvement districts (legal background) ----
+  // Context, not precedents: each community's circumstances differ. Keep in step with why-transition.html.
   peerDistricts: [
-    { name: "Horseshoe Bend", outcome: "SID dissolved after a lawsuit; city took over recreational amenities in 2025." },
-    { name: "Ozark Acres", outcome: "Settled a lawsuit by moving toward incorporating and phasing out the SID by 2028." },
-    { name: "Cherokee Village", outcome: "A judge's order requires the SID to be dissolved by the end of 2026." },
-    { name: "Holiday Island", outcome: "Settled one lawsuit in 2011; currently involved in another that is still being litigated." },
+    { name: "Horseshoe Bend", outcome: "The community went through litigation involving its improvement-district structure and ultimately moved recreational responsibilities to the city, in 2025." },
+    { name: "Ozark Acres", outcome: "Litigation involving the improvement district was resolved through an agreement that included steps toward incorporation and a planned phase-out of the district, targeted for 2028." },
+    { name: "Cherokee Village", outcome: "Court proceedings led to a planned transition away from the existing improvement-district structure. Dissolution was originally targeted for the end of 2026; a later settlement is reported to have given the district more time to work out a plan." },
+    { name: "Holiday Island", outcome: "The community resolved earlier litigation involving the district in 2011 and is currently involved in separate litigation. The outcome of the current case should not be assumed." },
   ],
 
   // ---- Five proposed city funds ----

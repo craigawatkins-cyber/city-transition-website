@@ -761,6 +761,7 @@ thead sup.cite a, .hero sup.cite a, .vote-band sup.cite a, .scenic-band sup.cite
 }
 
 .calc fieldset {
+  min-width: 0; /* let wide tables inside scroll instead of stretching the form on phones */
   border: none;
   padding: 0;
   margin: 0 0 var(--space-3);

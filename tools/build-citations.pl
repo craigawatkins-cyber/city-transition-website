@@ -65,6 +65,7 @@ my %SRC = (
   carlisle  => ['City of Carlisle, Arkansas, city website and council records.', 'https://www.carlislear.gov/'],
   millage   => ['Carroll County Tax Collector, millage rates for Holiday Island (school district 21H) as printed on county tax statements: 51.8 mills for 2025 taxes due in 2026, 48.1 mills for 2024 taxes due in 2025.', ''],
   aob       => ['Holiday Island Suburban Improvement District, 2026 Assessment of Benefits notice (annual assessment by property classification; 0% increase for 2026).', ''],
+  ballot    => ['University of Arkansas Division of Agriculture, Cooperative Extension Service, "Arkansas Voters Have Local Ballot Issues to Decide in November Election," August 2026 (Holiday Island measure: a 2.5% local sales and use tax for general fund expenses and capital improvements, per the Carroll County Clerk).', 'https://www.uaex.uada.edu/business-communities/ced-blog/posts/2026/august/arkansas-voters-have-local-ballot-issues-to-decide-in-november-2026-election.aspx'],
   # Growth plan
   ama       => ['American Medical Association, Economic Impact Study.', 'https://www.ama-assn.org/about/ama-research/economic-impact-study'],
   mainstreet=> ['Main Street Arkansas, Economic Impact Report 2023–2024 (2023: $21.4 million invested and 335 net new jobs; 2024: $103.3 million and 647).', 'https://www.arkansasheritage.com/docs/default-source/default-document-library/msa-economic-impact-report-2023-2024.pdf'],
