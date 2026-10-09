@@ -97,7 +97,50 @@
       <p>This site supports completing the transition to a consolidated city government. Its author is a Holiday Island resident, and several pages make that case directly. The facts, source documents and financial assumptions are presented so residents can evaluate that position for themselves. The aim is to keep official facts, independent analysis and recommendations visibly separate, so that a reader who disagrees with the author can still rely on the facts. The one deliberately neutral page is the <a href="public-safety.html">Public Safety page</a>, covering the still-undecided choice between a sheriff contract and a new city police department.</p>
 
       <h2>Questions or corrections</h2>
-      <p>If you believe a figure on this site is inaccurate or out of date, we want to know. Please raise it at a City Council or HISID Board of Commissioners meeting, or reach out through the City's official contact channels at <a href="https://www.cityofholidayisland.com" target="_blank" rel="noopener">cityofholidayisland.com</a>. Official plans, budgets, tax rates, assessments, petitions, votes and legal actions may change after this site was last updated in October 2026.</p>
+      <p>If you believe a figure on this site is inaccurate or out of date, we want to know. Use the <a href="#feedback">feedback form</a> below to tell the site's author. For questions about the plan itself, please raise them at a City Council or HISID Board of Commissioners meeting, or reach out through the City's official contact channels at <a href="https://www.cityofholidayisland.com" target="_blank" rel="noopener">cityofholidayisland.com</a>. Official plans, budgets, tax rates, assessments, petitions, votes and legal actions may change after this site was last updated in October 2026.</p>
+
+      <h2 id="feedback">Send feedback</h2>
+      <p>Corrections, questions and comments about this site are welcome. Your message goes by email to the resident who maintains the site. It does not go to the City or HISID, and it is not published.</p>
+      <form class="calc feedback-form" id="feedback-form" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="2f6d53c4-0fec-44ad-8a26-5050691aefdf">
+        <input type="hidden" name="subject" value="Holiday Island's Future feedback">
+        <input type="hidden" name="from_name" value="Holiday Island's Future website">
+        <input type="checkbox" name="botcheck" class="feedback-trap" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="field">
+          <label for="fb-name">Your name <span class="optional">(optional)</span></label>
+          <input type="text" id="fb-name" name="name" autocomplete="name" maxlength="100">
+        </div>
+        <div class="field">
+          <label for="fb-email">Your email <span class="optional">(optional, only if you would like a reply)</span></label>
+          <input type="email" id="fb-email" name="email" autocomplete="email" maxlength="150">
+        </div>
+        <div class="field">
+          <label for="fb-page">Which page is this about?</label>
+          <select id="fb-page" name="page">
+            <option>The site in general</option>
+            <option>Home</option>
+            <option>Why This Matters</option>
+            <option>Long Range Plan</option>
+            <option>The Budget</option>
+            <option>Services</option>
+            <option>Public Safety</option>
+            <option>How We'd Pay</option>
+            <option>Growth Plan</option>
+            <option>Tax Comparison</option>
+            <option>Cost Calculator</option>
+            <option>Timeline</option>
+            <option>FAQ</option>
+            <option>Sources &amp; About This Site</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="fb-message">Your feedback</label>
+          <textarea id="fb-message" name="message" rows="6" maxlength="5000" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send feedback</button>
+        <p class="feedback-status" id="feedback-status" role="status" aria-live="polite"></p>
+        <p class="source-note">Please do not include sensitive personal information. Messages are delivered through Web3Forms, a third-party form service.</p>
+      </form>
 
       <div class="hero-actions">
         <a class="btn btn-primary" href="long-range-plan.html">See the Long Range Plan summary →</a>
@@ -149,5 +192,6 @@
     </div>
   </div>
 </footer>
+<script src="assets/js/feedback.js"></script>
 </body>
 </html>
