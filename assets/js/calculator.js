@@ -41,15 +41,18 @@ function computeImpact({ isImproved, homeValue, vehicleValue, safetyOption, cust
   // on the lot's $20,000 value. Only vehicles are tied to improved/occupied
   // properties in the source model.
   const assessedValue = Number(homeValue) || 0;
+  // Personal property is entered as the assessed value from the county
+  // statement (already 20% of market value), so mills apply to it directly.
   const vehicles = isImproved ? Number(vehicleValue) || 0 : 0;
+  const millOnAssessed = 0.001;
 
   const hisidRemoved = isImproved ? c.hisidRemovedImproved : c.hisidRemovedUnimproved;
   const recreationUsd = c.recreationUsdAnnual;
   const publicSafetyUsd = isImproved ? c.publicSafetyUsdAnnual[safetyOption] : 0;
   // New = the planning-assumption rate minus what the City already levies.
   const realPropertyTax = assessedValue * c.newMillRate;
-  const personalPropertyTax = vehicles * c.newMillRate;
-  const existingCityPropertyTax = (assessedValue + vehicles) * c.currentMillRate;
+  const personalPropertyTax = vehicles * millOnAssessed;
+  const existingCityPropertyTax = assessedValue * c.currentMillRate + vehicles * 4 * millOnAssessed;
   // Sales tax: the study's flat household estimate by default (improved
   // properties only). A valid custom spending amount replaces it, and only it.
   const spending = parseCustomSpending(customSpending);
@@ -114,8 +117,8 @@ function renderCalculator() {
         : `Public Safety: $0.00 — vacant lots aren't billed`,
       `Real property, one additional mill: ${formatMoney(enteredHome)} market value × 0.0002 = +${formatMoney(r.realPropertyTax)}`,
       inputs.isImproved
-        ? `Vehicles, one additional mill: ${formatMoney(enteredVehicles)} market value × 0.0002 = +${formatMoney(r.personalPropertyTax)}`
-        : `Vehicles: $0.00 — vacant lots aren't billed`,
+        ? `Personal property, one additional mill: ${formatMoney(enteredVehicles)} assessed value × 0.001 = +${formatMoney(r.personalPropertyTax)}`
+        : `Personal property: $0.00 — vacant lots aren't billed`,
       r.salesTaxIsCustom
         ? `Sales tax: your ${formatMoney(r.spendingValue)} taxable spending × ${HI_DATA.revenue.proposedSalesTaxPct}% = +${formatMoney(r.salesTaxImpact)}`
         : `Sales tax: study's modeled household estimate = +${formatMoney(r.salesTaxImpact)}`,
@@ -173,7 +176,7 @@ function renderCalculator() {
         "Proposed (study figure)",
       ],
       ["City property tax, one additional mill (real estate)", r.realPropertyTax, "study", "Planning assumption (4 to 5 mills)"],
-      ["City property tax, one additional mill (vehicles)", r.personalPropertyTax, "study", "Planning assumption (4 to 5 mills)"],
+      ["City property tax, one additional mill (personal property)", r.personalPropertyTax, "study", "Planning assumption (4 to 5 mills)"],
       r.salesTaxIsCustom
         ? [`Estimated annual sales-tax impact (based on your ${formatMoney(r.spendingValue)} taxable spending estimate)`, r.salesTaxImpact, "estimate", "Your estimate"]
         : ["Estimated household impact of proposed 2.5% sales tax", r.salesTaxImpact, "estimate", "Modeled estimate"],
