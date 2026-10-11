@@ -12,7 +12,7 @@ This is a plain static site: HTML, CSS, and a little vanilla JavaScript for the 
 
 Every page works by simply double-clicking the `.html` file and opening it in a browser — there's no fetch-based include or build step to worry about.
 
-Only `calculator.html` loads JavaScript (`assets/js/data.js` and `assets/js/calculator.js`), which works over `file://` without a server. If you ever add features that need a local server (e.g. testing `fetch()` calls), run one from the repo root, for example `python -m http.server 8000`, then browse to `http://localhost:8000/`.
+Every page loads `assets/js/mobile.js` (the phone and tablet Menu button and the "swipe sideways" hint on wide tables), and `calculator.html` also loads `assets/js/data.js` and `assets/js/calculator.js`. All of it works over `file://` without a server. If you ever add features that need a local server (e.g. testing `fetch()` calls), run one from the repo root, for example `python -m http.server 8000`, then browse to `http://localhost:8000/`.
 
 ## Project structure
 
@@ -32,7 +32,7 @@ assets/fonts/                       — self-hosted Montserrat & Source Serif 4 
 docs/sources/                       — extracted text of the source documents, for fact-checking
 ```
 
-The header navigation and footer are repeated by hand in every page. When adding a page, add its link to the `<nav>` and footer of all of them.
+The header navigation and footer are repeated by hand in every page. When adding a page, add its link to the `<nav>` and footer of all of them. Phone and tablet styles live in the "Phones and tablets" block at the end of `components.css`; nothing in it applies above 900px.
 
 ## Editorial conventions
 
