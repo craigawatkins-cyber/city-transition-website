@@ -9,6 +9,10 @@
   2026, so only the fifth mill is counted as new here. The existing 4 mills
   are shown for reference and left out of the total.
 
+  Real estate can be entered two ways. "market" takes the county's estimated
+  market value and applies the 20% assessment ratio. "taxable" takes the
+  taxable assessed value from the county tax record and applies no ratio.
+
   netChange = hisidRemoved + recreationUsd + publicSafetyUsd
             + realPropertyTax + personalPropertyTax + salesTaxImpact
 */
@@ -33,14 +37,16 @@ function parseCustomSpending(raw) {
   return { status: "custom", value: n };
 }
 
-function computeImpact({ isImproved, homeValue, vehicleValue, safetyOption, customSpending }) {
+function computeImpact({ isImproved, valueMethod, homeValue, taxableValue, vehicleValue, safetyOption, customSpending }) {
   const c = HI_DATA.calculator;
 
   // Real property (land + any structure) is taxed regardless of whether a
   // lot is improved — the source's own vacant-lot example pays property tax
   // on the lot's $20,000 value. Only vehicles are tied to improved/occupied
   // properties in the source model.
-  const assessedValue = Number(homeValue) || 0;
+  const useTaxable = valueMethod === "taxable";
+  const marketValue = Number(homeValue) || 0;
+  const taxableAssessed = Number(taxableValue) || 0;
   // Personal property is entered as the assessed value from the county
   // statement (already 20% of market value), so mills apply to it directly.
   const vehicles = isImproved ? Number(vehicleValue) || 0 : 0;
@@ -50,9 +56,11 @@ function computeImpact({ isImproved, homeValue, vehicleValue, safetyOption, cust
   const recreationUsd = c.recreationUsdAnnual;
   const publicSafetyUsd = isImproved ? c.publicSafetyUsdAnnual[safetyOption] : 0;
   // New = the planning-assumption rate minus what the City already levies.
-  const realPropertyTax = assessedValue * c.newMillRate;
+  // A taxable assessed value is already assessed, so the 20% ratio is not applied again.
+  const realPropertyTax = useTaxable ? taxableAssessed * millOnAssessed : marketValue * c.newMillRate;
   const personalPropertyTax = vehicles * millOnAssessed;
-  const existingCityPropertyTax = assessedValue * c.currentMillRate + vehicles * 4 * millOnAssessed;
+  const existingRealPropertyTax = useTaxable ? taxableAssessed * 4 * millOnAssessed : marketValue * c.currentMillRate;
+  const existingCityPropertyTax = existingRealPropertyTax + vehicles * 4 * millOnAssessed;
   // Sales tax: the study's flat household estimate by default (improved
   // properties only). A valid custom spending amount replaces it, and only it.
   const spending = parseCustomSpending(customSpending);
@@ -80,8 +88,12 @@ function renderCalculator() {
 
   const propertyTypeInputs = form.querySelectorAll('input[name="property-type"]');
   const safetyOptionInputs = form.querySelectorAll('input[name="safety-option"]');
+  const valueMethodInputs = form.querySelectorAll('input[name="value-method"]');
   const vehicleValueField = document.getElementById("vehicle-value-field");
+  const homeValueField = document.getElementById("home-value-field");
+  const taxableValueField = document.getElementById("taxable-value-field");
   const homeValueInput = document.getElementById("home-value");
+  const taxableValueInput = document.getElementById("taxable-value");
   const vehicleValueInput = document.getElementById("vehicle-value");
 
   const resultBody = document.getElementById("calc-result-body");
@@ -98,7 +110,9 @@ function renderCalculator() {
     const safetyOption = form.querySelector('input[name="safety-option"]:checked').value;
     return {
       isImproved,
+      valueMethod: form.querySelector('input[name="value-method"]:checked').value,
       homeValue: homeValueInput.value,
+      taxableValue: taxableValueInput.value,
       vehicleValue: vehicleValueInput.value,
       safetyOption,
       customSpending: customSpendingInput ? customSpendingInput.value : "",
@@ -108,6 +122,8 @@ function renderCalculator() {
   function renderHowCalculated(inputs, r) {
     if (!howCalculatedList) return;
     const enteredHome = Number(inputs.homeValue) || 0;
+    const enteredTaxable = Number(inputs.taxableValue) || 0;
+    const realPerMonth = ` (≈ ${formatMoney(r.realPropertyTax / 12)}/month)`;
     const enteredVehicles = Number(inputs.vehicleValue) || 0;
     const steps = [
       `HISID assessment: ${formatMoney(r.hisidRemoved)}`,
@@ -115,7 +131,9 @@ function renderCalculator() {
       inputs.isImproved
         ? `Public Safety (${inputs.safetyOption === "police" ? "police dept." : "sheriff contract"}): +${formatMoney(r.publicSafetyUsd)}`
         : `Public Safety: $0.00 — vacant lots aren't billed`,
-      `Real property, one additional mill: ${formatMoney(enteredHome)} market value × 0.0002 = +${formatMoney(r.realPropertyTax)}`,
+      inputs.valueMethod === "taxable"
+        ? `Real property, one additional mill: ${formatMoney(enteredTaxable)} taxable assessed value × 0.001 = +${formatMoney(r.realPropertyTax)}${realPerMonth}`
+        : `Real property, one additional mill: ${formatMoney(enteredHome)} market value × 20% = ${formatMoney(enteredHome * 0.2)} assessed value × 0.001 = +${formatMoney(r.realPropertyTax)}${realPerMonth}`,
       inputs.isImproved
         ? `Personal property, one additional mill: ${formatMoney(enteredVehicles)} assessed value × 0.001 = +${formatMoney(r.personalPropertyTax)}`
         : `Personal property: $0.00 — vacant lots aren't billed`,
@@ -136,7 +154,7 @@ function renderCalculator() {
     const rows = [
       ["2027 · Roads", "HISID assessment is reduced because road costs move to the City", tbd],
       ["2027", "City property tax, if the council sets 5 mills in place of today's 4", signedMoney(newMill) + " / year"],
-      ["2027", "2.5% sales tax, if voters approve it on November 3", (inputs.isImproved || r.salesTaxIsCustom) ? signedMoney(r.salesTaxImpact) + (r.salesTaxIsCustom ? " / year (your spending estimate)" : " / year (estimate)") : "$0.00 in this model"],
+      ["2027 (if approved)", "2.5% sales tax, if voters approve it on November 3; the start date depends on the implementation schedule", (inputs.isImproved || r.salesTaxIsCustom) ? signedMoney(r.salesTaxImpact) + (r.salesTaxIsCustom ? " / year (your spending estimate)" : " / year (estimate)") : "$0.00 in this model"],
       ["2027/28 · Water &amp; sewer", "Assessment is reduced when the sewer loan is paid, and the Sewer Debt charge comes off the water bill", signedMoney(-sewer) + " / year"],
       ["2028 · Public safety &amp; fire", "Public Safety fee starts on the water bill, if the petition succeeds; assessment is reduced again", inputs.isImproved ? signedMoney(r.publicSafetyUsd) + " / year fee; reduction " + tbd : "No fee for vacant lots; reduction " + tbd],
       ["2029 · Recreation", "Recreation fee starts; assessment is reduced again", signedMoney(r.recreationUsd) + " / year (early estimate); reduction " + tbd],
@@ -149,14 +167,19 @@ function renderCalculator() {
   function update() {
     const inputs = currentInputs();
     vehicleValueField.hidden = !inputs.isImproved;
+    const useTaxable = inputs.valueMethod === "taxable";
+    homeValueField.hidden = useTaxable;
+    taxableValueField.hidden = !useTaxable;
 
-    const rawHomeValue = homeValueInput.value.trim();
+    const rawHomeValue = (useTaxable ? taxableValueInput : homeValueInput).value.trim();
     if (rawHomeValue === "" || Number.isNaN(Number(rawHomeValue))) {
       resultBody.innerHTML = "";
       if (phaseBody) phaseBody.innerHTML = "";
       totalEl.textContent = "";
       totalEl.className = "calc-total";
-      totalSummaryEl.textContent = "Enter your property value to calculate the estimate.";
+      totalSummaryEl.textContent = useTaxable
+        ? "Enter your taxable assessed value to calculate the estimate."
+        : "Enter your property value to calculate the estimate.";
       if (existingNoteEl) existingNoteEl.textContent = "";
       if (howCalculatedList) howCalculatedList.innerHTML = "";
       return;
@@ -229,7 +252,9 @@ function renderCalculator() {
 
   propertyTypeInputs.forEach((el) => el.addEventListener("change", refresh));
   safetyOptionInputs.forEach((el) => el.addEventListener("change", refresh));
+  valueMethodInputs.forEach((el) => el.addEventListener("change", refresh));
   homeValueInput.addEventListener("input", refresh);
+  taxableValueInput.addEventListener("input", refresh);
   vehicleValueInput.addEventListener("input", refresh);
   if (customSpendingInput) customSpendingInput.addEventListener("input", refresh);
 
