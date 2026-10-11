@@ -16,8 +16,8 @@ my $CITY = 'https://www.cityofholidayisland.com';
 # key => [ text, url (optional) ]
 my %SRC = (
   lrp       => ['City of Holiday Island &amp; Holiday Island Suburban Improvement District, <em>Long Range Plan</em>, September 22, 2026 (Resolution 2026-015).', $LRP],
-  may       => ['Mayor Dan Kees, <em>"Can the City Do It All?" — A Feasibility Study</em>, presented May 2, 2026 (updated May 6, 2026). Earlier feasibility estimate, not an adopted figure. Posted on the City website under About/Contact → Services.', "$CITY/services-1"],
-  july      => ['Mayor Dan Kees, <em>"The Future Holiday Island — Session 2: Protecting Our Citizens,"</em> presented July 11, 2026 (revised July 13, 2026). Earlier feasibility estimate, not an adopted figure. Presented in a public forum.', ''],
+  may       => ['Mayor Dan Kees, <em>"Can the City Do It All?" — A Feasibility Study</em>, presented May 2, 2026 (updated May 6, 2026). Earlier feasibility estimate, not an adopted figure. PDF posted by the City; also listed on the City\'s <a href="https://www.cityofholidayisland.com/services-1" target="_blank" rel="noopener">Services page</a>.', 'https://drive.google.com/file/d/1cW_t89j97DmD1tYG5C-fjrrJwmnLW6jU/view'],
+  july      => ['Mayor Dan Kees, <em>"The Future Holiday Island — Session 2: Protecting Our Citizens,"</em> presented July 11, 2026 (revised July 13, 2026). Earlier feasibility estimate, not an adopted figure. Presented in a public forum. The City has not posted it online as of October 2026, so the link opens a copy of the presentation PDF hosted by this site.', 'docs/sources/public-safety-presentation-2026-07-11.pdf'],
   sotc      => ['City of Holiday Island, "State of the City: Planning for Holiday Island\'s Future," January 2026.', "$CITY/post/january-16-2026-state-of-the-city-planning-for-holiday-island-s-future"],
   mcf       => ['City of Holiday Island, "Moving the City Forward," August 2026.', "$CITY/post/moving-the-city-forward"],
   ann       => ['City of Holiday Island, "Long Range Plan Now Available: Your Input Is Needed," October 2026.', "$CITY/post/long-range-plan-now-available-your-input-is-needed"],
