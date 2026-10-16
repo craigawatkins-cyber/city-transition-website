@@ -9,6 +9,10 @@
   2026, so only the fifth mill is counted as new here. The existing 4 mills
   are shown for reference and left out of the total.
 
+  A second difference: the study charged vacant lots the Recreation fee.
+  How vacant lots would be treated depends on the City's adopted fee
+  methodology, so no Urban Service District fee is applied to them here.
+
   Real estate can be entered two ways. "market" takes the county's estimated
   market value and applies the 20% assessment ratio. "taxable" takes the
   taxable assessed value from the county tax record and applies no ratio.
@@ -53,7 +57,7 @@ function computeImpact({ isImproved, valueMethod, homeValue, taxableValue, vehic
   const millOnAssessed = 0.001;
 
   const hisidRemoved = isImproved ? c.hisidRemovedImproved : c.hisidRemovedUnimproved;
-  const recreationUsd = c.recreationUsdAnnual;
+  const recreationUsd = isImproved ? c.recreationUsdAnnual : 0;
   const publicSafetyUsd = isImproved ? c.publicSafetyUsdAnnual[safetyOption] : 0;
   // New = the planning-assumption rate minus what the City already levies.
   // A taxable assessed value is already assessed, so the 20% ratio is not applied again.
@@ -127,10 +131,12 @@ function renderCalculator() {
     const enteredVehicles = Number(inputs.vehicleValue) || 0;
     const steps = [
       `HISID assessment: ${formatMoney(r.hisidRemoved)}`,
-      `Recreation Urban Service District fee: +${formatMoney(r.recreationUsd)}`,
+      inputs.isImproved
+        ? `Recreation Urban Service District fee: +${formatMoney(r.recreationUsd)}`
+        : `Recreation: $0.00 — not applied to vacant lots`,
       inputs.isImproved
         ? `Public Safety (${inputs.safetyOption === "police" ? "police dept." : "sheriff contract"}): +${formatMoney(r.publicSafetyUsd)}`
-        : `Public Safety: $0.00 — vacant lots aren't billed`,
+        : `Public Safety: $0.00 — not applied to vacant lots`,
       inputs.valueMethod === "taxable"
         ? `Real property, one additional mill: ${formatMoney(enteredTaxable)} taxable assessed value × 0.001 = +${formatMoney(r.realPropertyTax)}${realPerMonth}`
         : `Real property, one additional mill: ${formatMoney(enteredHome)} market value × 20% = ${formatMoney(enteredHome * 0.2)} assessed value × 0.001 = +${formatMoney(r.realPropertyTax)}${realPerMonth}`,
@@ -156,8 +162,8 @@ function renderCalculator() {
       ["2027", "City property tax, if the council sets 5 mills in place of today's 4", signedMoney(newMill) + " / year"],
       ["2027 (if approved)", "2.5% sales tax, if voters approve it on November 3; the start date depends on the implementation schedule", (inputs.isImproved || r.salesTaxIsCustom) ? signedMoney(r.salesTaxImpact) + (r.salesTaxIsCustom ? " / year (your spending estimate)" : " / year (estimate)") : "$0.00 in this model"],
       ["2027/28 · Water &amp; sewer", "Assessment is reduced when the sewer loan is paid, and the Sewer Debt charge comes off the water bill", signedMoney(-sewer) + " / year"],
-      ["2028 · Public safety &amp; fire", "Public Safety fee starts on the water bill, if the petition succeeds; assessment is reduced again", inputs.isImproved ? signedMoney(r.publicSafetyUsd) + " / year fee; reduction " + tbd : "No fee for vacant lots; reduction " + tbd],
-      ["2029 · Recreation", "Recreation fee starts; assessment is reduced again", signedMoney(r.recreationUsd) + " / year (early estimate); reduction " + tbd],
+      ["2028 · Public safety &amp; fire", "Public Safety fee starts on the water bill, if the petition succeeds; assessment is reduced again", inputs.isImproved ? signedMoney(r.publicSafetyUsd) + " / year fee; reduction " + tbd : "No fee applied to vacant lots; reduction " + tbd],
+      ["2029 · Recreation", "Recreation fee starts; assessment is reduced again", (inputs.isImproved ? signedMoney(r.recreationUsd) + " / year (preliminary estimate)" : "No fee applied to vacant lots") + "; reduction " + tbd],
       ["2030+ · HISID phase-out", "The remaining assessment is eliminated", "<strong>Net " + signedMoney(r.netChange) + " / year</strong> compared with today"],
     ];
     phaseBody.innerHTML = rows.map(([when, what, amount]) =>
@@ -189,14 +195,14 @@ function renderCalculator() {
 
     const rows = [
       ["HISID assessment goes away", r.hisidRemoved, "current", "Current charge (ending)"],
-      ["Recreation Urban Service District fee", r.recreationUsd, "estimate", "Early estimate (set in 2029)"],
+      [inputs.isImproved ? "Recreation Urban Service District fee" : "Recreation Urban Service District fee (not applied to vacant lots)", r.recreationUsd, "estimate", "Preliminary estimate (set in 2029)"],
       [
         inputs.isImproved
           ? `Public Safety Urban Service District fee (${inputs.safetyOption === "police" ? "police dept." : "sheriff contract"})`
-          : "Public Safety Urban Service District fee (vacant lots not billed)",
+          : "Public Safety Urban Service District fee (not applied to vacant lots)",
         r.publicSafetyUsd,
         "study",
-        "Proposed (study figure)",
+        "Preliminary estimate (study figure)",
       ],
       ["City property tax, one additional mill (real estate)", r.realPropertyTax, "study", "Planning assumption (4 to 5 mills)"],
       ["City property tax, one additional mill (personal property)", r.personalPropertyTax, "study", "Planning assumption (4 to 5 mills)"],

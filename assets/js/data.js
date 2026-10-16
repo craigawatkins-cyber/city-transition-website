@@ -182,7 +182,7 @@ const HI_DATA = {
   calculator: {
     hisidRemovedImproved: -834.60,
     hisidRemovedUnimproved: -513.60,
-    recreationUsdAnnual: 187.85,
+    recreationUsdAnnual: 187.85, // improved properties only in the calculator
     publicSafetyUsdAnnual: { sheriff: 632, police: 888 }, // improved properties only
     millRate: 0.001, // 20% assessed x 0.005 (5 mills, the LRP planning assumption)
     currentMillRate: 0.0008, // 20% assessed x 0.004 (4 mills, levied by the City since 2026)
