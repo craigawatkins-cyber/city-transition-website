@@ -41,7 +41,7 @@ The header navigation and footer are repeated by hand in every page. When adding
 - **Source labels** (`<p class="source-note">`) sit under major financial and timeline claims.
 - **Numbered citations.** Mark a figure with `<sup class="cite" data-src="lrp"></sup>` (one or more source keys), then run `perl tools/build-citations.pl *.html` from the repo root. The script numbers the citations and rebuilds each page's "Sources cited on this page" list. Source keys and their links live at the top of that script.
 - **Don't overstate certainty.** The plan calls itself "not a binding contract but rather a good faith projection." Prefer "planned," "expected," "would," and "not yet determined" unless an official source states an exact fact.
-- **Current vs. assumed rates.** The City levies 4 mills today; 5 mills is the plan's planning assumption. The 2.5% sales tax is a proposed ballot measure until voters approve it.
+- **Current vs. assumed rates.** The City levies 4 mills today; 5 mills is the plan's planning assumption. The 2.5% sales tax is not in effect; describe it as a potential future ballot initiative.
 - **No personal records.** Never publish real tax or parcel records.
 
 ## Visual theme

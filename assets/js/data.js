@@ -245,7 +245,6 @@ const HI_DATA = {
     { year: "2026", phase: "Long Range Plan", status: "Endorsed", items: [
       "September 22: Long Range Plan released, endorsed by the City Council and HISID Board.",
       "October: public input period.",
-      "November 3: vote on a proposed 2.5% City sales tax. If it fails, future transition planning is put on hold.",
       "By year end: HISID plans to dedicate the remaining roads (about 55 miles) to the City.",
     ]},
     { year: "2027", phase: "Roads", status: "Decided", items: [

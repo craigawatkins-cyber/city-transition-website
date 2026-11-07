@@ -160,7 +160,7 @@ function renderCalculator() {
     const rows = [
       ["2027 · Roads", "HISID assessment is reduced because road costs move to the City", tbd],
       ["2027", "City property tax, if the council sets 5 mills in place of today's 4", signedMoney(newMill) + " / year"],
-      ["2027 (if approved)", "2.5% sales tax, if voters approve it on November 3; the start date depends on the implementation schedule", (inputs.isImproved || r.salesTaxIsCustom) ? signedMoney(r.salesTaxImpact) + (r.salesTaxIsCustom ? " / year (your spending estimate)" : " / year (estimate)") : "$0.00 in this model"],
+      ["If approved", "2.5% sales tax: not in effect, a potential future ballot initiative; if voters approve it, the start date depends on the implementation schedule", (inputs.isImproved || r.salesTaxIsCustom) ? signedMoney(r.salesTaxImpact) + (r.salesTaxIsCustom ? " / year (your spending estimate)" : " / year (estimate)") : "$0.00 in this model"],
       ["2027/28 · Water &amp; sewer", "Assessment is reduced when the sewer loan is paid, and the Sewer Debt charge comes off the water bill", signedMoney(-sewer) + " / year"],
       ["2028 · Public safety &amp; fire", "Public Safety fee starts on the water bill, if the petition succeeds; assessment is reduced again", inputs.isImproved ? signedMoney(r.publicSafetyUsd) + " / year fee; reduction " + tbd : "No fee applied to vacant lots; reduction " + tbd],
       ["2029 · Recreation", "Recreation fee starts; assessment is reduced again", (inputs.isImproved ? signedMoney(r.recreationUsd) + " / year (preliminary estimate)" : "No fee applied to vacant lots") + "; reduction " + tbd],
